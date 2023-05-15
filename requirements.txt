@@ -16,10 +16,7 @@ spacy
 streamlit
 umap-learn
 wordcloud
-mlxtend
-bertopic
 ipywidgets==7.6.6
-hdbscan
 #biterm
 bitermplus
 tmplot
