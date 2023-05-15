@@ -23,8 +23,6 @@ import streamlit.components.v1 as components
 from io import StringIO
 from ipywidgets.embed import embed_minimal_html
 from nltk.stem.snowball import SnowballStemmer
-import plotly.express as px
-from sklearn.cluster import KMeans
 import bitermplus as btm
 import tmplot as tmp
 
