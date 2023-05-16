@@ -128,7 +128,7 @@ if uploaded_file is not None:
           'Choose topic',
           (totaltop))
         
-        col1, col2 = st.columns(3)
+        col1, col2 = st.columns(2)
         with col1:
              btmvis_coords = tmp.plot_scatter_topics(topics_coords, size_col='size', label_col='label', topic=num_bitopic_vis)
              with StringIO() as f:
