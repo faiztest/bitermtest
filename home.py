@@ -63,77 +63,28 @@ if uploaded_file is not None:
 
     method = st.selectbox(
             'Choose method',
-            ('pyLDA', 'Biterm', 'BERTopic'))
+            ('Biterm', 'else'))
         
-    #===topic===
-    if method is 'pyLDA':
-         topic_abs = paper.Abstract_stop.values.tolist()
-         topic_abs = [t.split(' ') for t in topic_abs]
-         id2word = Dictionary(topic_abs)
-         corpus = [id2word.doc2bow(text) for text in topic_abs]
-         num_topic = st.slider('Choose number of topics', min_value=2, max_value=15, step=1)
-
-         #===LDA===
-         lda_model = LdaModel(corpus=corpus,
-                     id2word=id2word,
-                     num_topics=num_topic, 
-                     random_state=0,
-                     chunksize=100,
-                     alpha='auto',
-                     per_word_topics=True)
-
-         pprint(lda_model.print_topics())
-         doc_lda = lda_model[corpus]
-
-         tab1, tab2, tab3 = st.tabs(["📈 Generate visualization & Calculate coherence", "📃 Reference", "📓 Recommended Reading"])
-
-         with tab1:
-         #===visualization===
-             with st.spinner('Calculating and Creating pyLDAvis Visualization ...'):
-                 coherence_model_lda = CoherenceModel(model=lda_model, texts=topic_abs, dictionary=id2word, coherence='c_v')
-                 coherence_lda = coherence_model_lda.get_coherence()
-                 st.write('Score: ', (coherence_lda))
-                 vis = pyLDAvis.gensim_models.prepare(lda_model, corpus, id2word)
-                 py_lda_vis_html = pyLDAvis.prepared_data_to_html(vis)
-                 components.html(py_lda_vis_html, width=1700, height=800)
-                 st.markdown('Copyright (c) 2015, Ben Mabey. https://github.com/bmabey/pyLDAvis')
-
-         with tab2:
-             st.markdown('**Sievert, C., & Shirley, K. (2014). LDAvis: A method for visualizing and interpreting topics. Proceedings of the Workshop on Interactive Language Learning, Visualization, and Interfaces.** https://doi.org/10.3115/v1/w14-3110')
-
-         with tab3:
-             st.markdown('**Chen, X., & Wang, H. (2019, January). Automated chat transcript analysis using topic modeling for library reference services. Proceedings of the Association for Information Science and Technology, 56(1), 368–371.** https://doi.org/10.1002/pra2.31')
-             st.markdown('**Joo, S., Ingram, E., & Cahill, M. (2021, December 15). Exploring Topics and Genres in Storytime Books: A Text Mining Approach. Evidence Based Library and Information Practice, 16(4), 41–62.** https://doi.org/10.18438/eblip29963')
-             st.markdown('**Lamba, M., & Madhusudhan, M. (2021, July 31). Topic Modeling. Text Mining for Information Professionals, 105–137.** https://doi.org/10.1007/978-3-030-85085-2_4')
-             st.markdown('**Lamba, M., & Madhusudhan, M. (2019, June 7). Mapping of topics in DESIDOC Journal of Library and Information Technology, India: a study. Scientometrics, 120(2), 477–505.** https://doi.org/10.1007/s11192-019-03137-5')
-     
     #===Biterm===
-    elif method is 'Biterm':
-        topic_abs = paper.Abstract_stop.values.tolist()
-          
-        #@st.cache_data
-        def bitermdata():
-             global model
-             X, vocabulary, vocab_dict = btm.get_words_freqs(topic_abs)
-             tf = np.array(X.sum(axis=0)).ravel()
-             docs_vec = btm.get_vectorized_docs(topic_abs, vocabulary)
-             docs_lens = list(map(len, docs_vec))
-             biterms = btm.get_biterms(docs_vec)
-             model = btm.BTM(
-                 X, vocabulary, seed=12321, T=num_bitopic, M=20, alpha=50/8, beta=0.01)
-             model.fit(biterms, iterations=20)
-             p_zd = model.transform(docs_vec)
-             coherence = model.coherence_
-             #return model
-             
-             
-        num_bitopic = st.slider('Choose number of topics', min_value=8, max_value=20, step=1)
-        bitermdata()  
+    if method is 'Biterm':
+        topic_abs = paper.Abstract_stop.values.tolist()       
+        X, vocabulary, vocab_dict = btm.get_words_freqs(topic_abs)
+        tf = np.array(X.sum(axis=0)).ravel()
+        docs_vec = btm.get_vectorized_docs(topic_abs, vocabulary)
+        docs_lens = list(map(len, docs_vec))
+        biterms = btm.get_biterms(docs_vec)
+        model = btm.BTM(
+          X, vocabulary, seed=12321, T=num_bitopic, M=20, alpha=50/8, beta=0.01)
+        model.fit(biterms, iterations=20)
+        p_zd = model.transform(docs_vec)
+        coherence = model.coherence_
+        
+        num_bitopic = st.slider('Choose number of topics', min_value=8, max_value=20, step=1) 
         topics_coords = tmp.prepare_coords(model)
         phi = tmp.get_phi(model)  
         totaltop = topics_coords.label.values.tolist()
      
-        tab1, tab2 = st.tabs(["Viz", "Owl"])
+        tab1, tab2 = st.tabs(["Visualization", "--------"])
         with tab1:
           
           col1, col2 = st.columns(2)
