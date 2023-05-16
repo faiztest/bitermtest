@@ -135,11 +135,12 @@ if uploaded_file is not None:
      
         tab1, tab2 = st.tabs(["Viz", "Owl"])
         with tab1:
-          num_bitopic_vis = st.selectbox(
-               'Choose topic',
-               (totaltop))
+          
           col1, col2 = st.columns(2)
           with col1:
+               num_bitopic_vis = st.selectbox(
+                    'Choose topic',
+                    (totaltop))
                btmvis_coords = tmp.plot_scatter_topics(topics_coords, size_col='size', label_col='label', topic=num_bitopic_vis)
                st.altair_chart(btmvis_coords, use_container_width=True)
           with col2:
