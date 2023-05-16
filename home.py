@@ -122,8 +122,8 @@ if uploaded_file is not None:
              model = btm.BTM(
                  X, vocabulary, seed=12321, T=num_bitopic, M=20, alpha=50/8, beta=0.01)
              model.fit(biterms, iterations=20)
-             #p_zd = model.transform(docs_vec)
-             #coherence = model.coherence_
+             p_zd = model.transform(docs_vec)
+             coherence = model.coherence_
              #return model
              
              
