@@ -145,6 +145,7 @@ if uploaded_file is not None:
                   #  embed_minimal_html(f, [btmvis_probs], title="Relevant words (terms)")
                   #  fig_html = f.getvalue()
                  # st.components.v1.html(fig_html, width=600, height=1200, scrolling=True)
+        
         with tab2:
           btmvis = tmp.report(width=450, model=model, docs=topic_abs)
           with StringIO() as f:
