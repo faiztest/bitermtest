@@ -124,12 +124,13 @@ if uploaded_file is not None:
              p_zd = model.transform(docs_vec)
              coherence = model.coherence_
              topics_coords = tmp.prepare_coords(model)
-             totaltop = topics_coords.label.values.tolist()
              phi = tmp.get_phi(model)
              return
                
         num_bitopic = st.slider('Choose number of topics', min_value=8, max_value=20, step=1)
         bitermdata()
+        totaltop = topics_coords.label.values.tolist()
+     
         tab1, tab2 = st.tabs(["Viz", "Owl"])
         with tab1:
           num_bitopic_vis = st.selectbox(
