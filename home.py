@@ -111,20 +111,24 @@ if uploaded_file is not None:
     elif method is 'Biterm':
         num_bitopic = st.slider('Choose number of topics', min_value=4, max_value=20, step=1)
         topic_abs = paper.Abstract_stop.values.tolist()
-        X, vocabulary, vocab_dict = btm.get_words_freqs(topic_abs)
-        tf = np.array(X.sum(axis=0)).ravel()
-        docs_vec = btm.get_vectorized_docs(topic_abs, vocabulary)
-        docs_lens = list(map(len, docs_vec))
-        biterms = btm.get_biterms(docs_vec)
-        model = btm.BTM(
-            X, vocabulary, seed=12321, T=num_bitopic, M=20, alpha=50/8, beta=0.01)
-        model.fit(biterms, iterations=20)
-        p_zd = model.transform(docs_vec)
-        coherence = model.coherence_
-        topics_coords = tmp.prepare_coords(model)
-        totaltop = topics_coords.label.values.tolist()
-        phi = tmp.get_phi(model)
         
+        @st.cache
+        def bitermdata(TOPIC):
+             X, vocabulary, vocab_dict = btm.get_words_freqs(TOPIC)
+             tf = np.array(X.sum(axis=0)).ravel()
+             docs_vec = btm.get_vectorized_docs(TOPIC, vocabulary)
+             docs_lens = list(map(len, docs_vec))
+             biterms = btm.get_biterms(docs_vec)
+             model = btm.BTM(
+                 X, vocabulary, seed=12321, T=num_bitopic, M=20, alpha=50/8, beta=0.01)
+             model.fit(biterms, iterations=20)
+             p_zd = model.transform(docs_vec)
+             coherence = model.coherence_
+             topics_coords = tmp.prepare_coords(model)
+             totaltop = topics_coords.label.values.tolist()
+             phi = tmp.get_phi(model)
+        
+        bitermdata(topic_abs)
         tab1, tab2 = st.tabs(["Viz", "Owl"])
         with tab1:
           num_bitopic_vis = st.selectbox(
