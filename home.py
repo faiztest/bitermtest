@@ -101,6 +101,6 @@ if uploaded_file is not None:
                     st.altair_chart(btmvis_probs, use_container_width=True)
 
              with tab2:
-               #btmvis = tmp.report(width=450, model=model, docs=topic_abs)
-               #st.altair_chart(btmvis, use_container_width=True)  
+               btmvis = tmp.report(width=450, model=model, docs=topic_abs)
+               st.write(btmvis)  
                st.write('hello')
