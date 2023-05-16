@@ -111,7 +111,7 @@ if uploaded_file is not None:
     elif method is 'Biterm':
         topic_abs = paper.Abstract_stop.values.tolist()
           
-        @st.cache_data
+        #@st.cache_data
         def bitermdata():
              global topics_coords, phi
              X, vocabulary, vocab_dict = btm.get_words_freqs(topic_abs)
