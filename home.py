@@ -113,7 +113,7 @@ if uploaded_file is not None:
           
         #@st.cache_data
         def bitermdata():
-             #global model
+             global model
              X, vocabulary, vocab_dict = btm.get_words_freqs(topic_abs)
              tf = np.array(X.sum(axis=0)).ravel()
              docs_vec = btm.get_vectorized_docs(topic_abs, vocabulary)
@@ -124,7 +124,7 @@ if uploaded_file is not None:
              model.fit(biterms, iterations=20)
              #p_zd = model.transform(docs_vec)
              #coherence = model.coherence_
-             return model
+             #return model
              
              
         num_bitopic = st.slider('Choose number of topics', min_value=8, max_value=20, step=1)
