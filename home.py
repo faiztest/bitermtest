@@ -110,13 +110,12 @@ if uploaded_file is not None:
     #===Biterm===
     elif method is 'Biterm':
         num_bitopic = st.slider('Choose number of topics', min_value=4, max_value=20, step=1)
-        topic_abs = paper.Abstract_stop.values.tolist()
         
         @st.cache
-        def bitermdata(TOPIC):
-             X, vocabulary, vocab_dict = btm.get_words_freqs(TOPIC)
+        def bitermdata(topic_abs):
+             X, vocabulary, vocab_dict = btm.get_words_freqs(topic_abs)
              tf = np.array(X.sum(axis=0)).ravel()
-             docs_vec = btm.get_vectorized_docs(TOPIC, vocabulary)
+             docs_vec = btm.get_vectorized_docs(topic_abs, vocabulary)
              docs_lens = list(map(len, docs_vec))
              biterms = btm.get_biterms(docs_vec)
              model = btm.BTM(
@@ -127,7 +126,8 @@ if uploaded_file is not None:
              topics_coords = tmp.prepare_coords(model)
              totaltop = topics_coords.label.values.tolist()
              phi = tmp.get_phi(model)
-        
+               
+        topic_abs = paper.Abstract_stop.values.tolist()
         bitermdata(topic_abs)
         tab1, tab2 = st.tabs(["Viz", "Owl"])
         with tab1:
