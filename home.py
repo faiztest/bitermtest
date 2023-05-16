@@ -106,7 +106,7 @@ if uploaded_file is not None:
                st.write('using st write')
                st.altair_chart(btmvis, use_container_width=True)
                st.write('using altair')
-               st.markdown(btmvis_probs, unsafe_allow_html=False, *, help=None)
+               st.markdown(btmvis_probs, unsafe_allow_html=False, help=None)
                st.write('using markdown')
                with StringIO() as f:
                     embed_minimal_html(f, [btmvis], title="Hey!")
