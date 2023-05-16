@@ -124,9 +124,24 @@ if uploaded_file is not None:
         topics_coords = tmp.prepare_coords(model)
         totaltop = topics_coords.label.values.tolist()
         phi = tmp.get_phi(model)
-        btmvis = tmp.plot_scatter_topics(topics_coords, size_col='size', label_col='label')
-        st.altair_chart(btmvis, use_container_width=True)
-        #with StringIO() as g:
+        tab1, tab2 = st.tabs(["Viz", "Owl"])
+        with tab1:
+          num_bitopic_vis = st.selectbox(
+               'Choose topic',
+               (totaltop))
+          col1, col2 = st.columns(2)
+          with col1:
+               btmvis_coords = tmp.plot_scatter_topics(topics_coords, size_col='size', label_col='label', topic=num_bitopic_vis)
+               st.altair_chart(btmvis_coords, use_container_width=True)
+          with col2:
+               btmvis_probs = terms_probs = tmp.calc_terms_probs_ratio(phi, topic=num_bitopic_vis, lambda_=1)
+               st.altair_chart(btmvis_probs, use_container_width=True)
+          
+       with tab2:
+          st.write('hello')
+        
+     
+     #with StringIO() as g:
         #  embed_minimal_html(g, [btmvis], title="BTMVIS")
         #  fig_html = g.getvalue()
         #st.components.v1.html(fig_html, width=800, height=1200, scrolling=True)           
