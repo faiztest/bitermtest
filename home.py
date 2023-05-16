@@ -117,12 +117,12 @@ if uploaded_file is not None:
         docs_lens = list(map(len, docs_vec))
         biterms = btm.get_biterms(docs_vec)
         model = btm.BTM(
-            X, vocabulary, seed=12321, T=num_bitopic, M=20, alpha=50/8, beta=0.01)
+            X, vocabulary, seed=12321, T=10, M=20, alpha=50/8, beta=0.01)
         model.fit(biterms, iterations=20)
         p_zd = model.transform(docs_vec)
         coherence = model.coherence_
         #st.write('Score: ', (coherence))
-        model.labels_
+        #model.labels_
         btmvis = tmp.report(width=450, model=model, docs=topic_abs)
         with StringIO() as f:
           embed_minimal_html(f, [btmvis], title="Biterm")
