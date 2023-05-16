@@ -133,7 +133,7 @@ if uploaded_file is not None:
              btmvis_coords = tmp.plot_scatter_topics(width=450, topics_coords, size_col='size', label_col='label', topic=num_bitopic_vis)
              with StringIO() as f:
                embed_minimal_html(f, [btmvis_coords], title="Intertopic distance plot")
-             fig_html = f.getvalue()
+               fig_html = f.getvalue()
              st.components.v1.html(fig_html, width=600, height=1200, scrolling=True)
 
             
@@ -144,11 +144,11 @@ if uploaded_file is not None:
                  # st.components.v1.html(fig_html, width=600, height=1200, scrolling=True)
         
         with tab2:
-          btmvis = tmp.report(width=450, model=model, docs=topic_abs)
-          with StringIO() as f:
-               embed_minimal_html(f, [btmvis], title="BTMVIS")
-               fig_html = f.getvalue()
-          st.components.v1.html(fig_html, width=600, height=1200, scrolling=True)           
+             btmvis = tmp.report(width=450, model=model, docs=topic_abs)
+             with StringIO() as g:
+               embed_minimal_html(g, [btmvis], title="BTMVIS")
+               fig_html = g.getvalue()
+             st.components.v1.html(fig_html, width=600, height=1200, scrolling=True)           
     
     #===BERTopic===
     elif method is 'BERTopic':
