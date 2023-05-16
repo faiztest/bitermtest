@@ -126,6 +126,7 @@ if uploaded_file is not None:
              topics_coords = tmp.prepare_coords(model)
              totaltop = topics_coords.label.values.tolist()
              phi = tmp.get_phi(model)
+             return
                
         num_bitopic = st.slider('Choose number of topics', min_value=4, max_value=20, step=1)
         bitermdata(num_bitopic)
