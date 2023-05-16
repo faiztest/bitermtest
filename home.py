@@ -135,12 +135,14 @@ if uploaded_file is not None:
                btmvis_coords = tmp.plot_scatter_topics(topics_coords, size_col='size', label_col='label', topic=num_bitopic_vis)
                st.altair_chart(btmvis_coords, use_container_width=True)
           with col2:
-               btmvis_probs = tmp.calc_terms_probs_ratio(phi, topic=num_bitopic_vis, lambda_=1)
+               terms_probs = tmp.calc_terms_probs_ratio(phi, topic=num_bitopic_vis, lambda_=1)
+               btmvis_probs = tmp.plot_terms(terms_probs)
                st.altair_chart(btmvis_probs, use_container_width=True)
           
         with tab2:
-          btmvis = tmp.report(width=450, model=model, docs=topic_abs)
-          st.altair_chart(btmvis, use_container_width=True)     
+          #btmvis = tmp.report(width=450, model=model, docs=topic_abs)
+          #st.altair_chart(btmvis, use_container_width=True)  
+          st.write('hello')
     
     #===BERTopic===
     elif method is 'BERTopic':
