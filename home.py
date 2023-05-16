@@ -130,7 +130,7 @@ if uploaded_file is not None:
              num_bitopic_vis = st.selectbox(
                'Choose topic',
                (totaltop))
-             btmvis_coords = tmp.plot_scatter_topics(width=450, topics_coords, size_col='size', label_col='label', topic=num_bitopic_vis)
+             btmvis_coords = tmp.plot_scatter_topics(topics_coords, size_col='size', label_col='label', topic=num_bitopic_vis)
              with StringIO() as f:
                embed_minimal_html(f, [btmvis_coords], title="Intertopic distance plot")
                fig_html = f.getvalue()
