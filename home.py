@@ -124,6 +124,7 @@ if uploaded_file is not None:
         topics_coords = tmp.prepare_coords(model)
         totaltop = topics_coords.label.values.tolist()
         phi = tmp.get_phi(model)
+        
         tab1, tab2 = st.tabs(["Viz", "Owl"])
         with tab1:
           num_bitopic_vis = st.selectbox(
@@ -137,7 +138,7 @@ if uploaded_file is not None:
                btmvis_probs = terms_probs = tmp.calc_terms_probs_ratio(phi, topic=num_bitopic_vis, lambda_=1)
                st.altair_chart(btmvis_probs, use_container_width=True)
           
-       with tab2:
+        with tab2:
           st.write('hello')
         
      
