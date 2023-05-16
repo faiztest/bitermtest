@@ -124,11 +124,11 @@ if uploaded_file is not None:
         topics_coords = tmp.prepare_coords(model)
         totaltop = topics_coords.label.values.tolist()
         phi = tmp.get_phi(model)
-        btmvis = tmp.report(width=450, model=model, docs=topic_abs)
+        btmvis = tmp.plot_scatter_topics(topics_coords, size_col='size', label_col='label')
         with StringIO() as g:
           embed_minimal_html(g, [btmvis], title="BTMVIS")
           fig_html = g.getvalue()
-        st.components.v1.html(fig_html, width=600, height=1200, scrolling=True)           
+        st.components.v1.html(fig_html, width=800, height=1200, scrolling=True)           
     
     #===BERTopic===
     elif method is 'BERTopic':
