@@ -63,7 +63,7 @@ if uploaded_file is not None:
 
     method = st.selectbox(
             'Choose method',
-            ('Biterm', 'else'))
+            ('Biterm', 'Empty'))
         
     #===Biterm===
     if method is 'Biterm':
@@ -101,15 +101,6 @@ if uploaded_file is not None:
                     st.altair_chart(btmvis_probs, use_container_width=True)
 
              with tab2:
-               btmvis = tmp.report(width=450, model=model, docs=topic_abs)
-               st.write(btmvis)  
-               st.write('using st write')
-               st.altair_chart(btmvis, use_container_width=True)
-               st.write('using altair')
-               st.markdown(btmvis_probs, unsafe_allow_html=False, help=None)
-               st.write('using markdown')
-               with StringIO() as f:
-                    embed_minimal_html(f, [btmvis], title="Hey!")
-                    fig_html = f.getvalue()
-               st.components.v1.html(fig_html, use_container_width=True, height=700, scrolling=True)
-               st.write('using html')
+               top_docs_topic0 = tmp.get_top_docs(topic_abs, model=model, docs_num=10, topics=[num_bitopic_vis])
+               st.subheader('Top 10 documents')
+               st.write(top_docs_topic0)
