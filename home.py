@@ -85,7 +85,7 @@ if uploaded_file is not None:
              phi = tmp.get_phi(model)  
              totaltop = topics_coords.label.values.tolist()
 
-             tab1, tab2 = st.tabs(["Visualization", "--------"])
+             tab1, tab2 = st.tabs(["Visualization", "BTM"])
              with tab1:
 
                col1, col2 = st.columns(2)
@@ -103,4 +103,13 @@ if uploaded_file is not None:
              with tab2:
                btmvis = tmp.report(width=450, model=model, docs=topic_abs)
                st.write(btmvis)  
-               st.write('hello')
+               st.write('using st write')
+               st.altair_chart(btmvis, use_container_width=True)
+               st.write('using altair')
+               st.markdown(btmvis_probs, unsafe_allow_html=False, *, help=None)
+               st.write('using markdown')
+               with StringIO() as f:
+                    embed_minimal_html(f, [btmvis], title="Hey!")
+                    fig_html = f.getvalue()
+               st.components.v1.html(fig_html, use_container_width=True, height=700, scrolling=True)
+               st.write('using html')
