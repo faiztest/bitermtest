@@ -85,7 +85,7 @@ if uploaded_file is not None:
              phi = tmp.get_phi(model)  
              totaltop = topics_coords.label.values.tolist()
 
-             tab1, tab2 = st.tabs(["Visualization", "BTM"])
+             tab1, tab2 = st.tabs(["Visualization", "Documents"])
              with tab1:
 
                col1, col2 = st.columns(2)
@@ -103,4 +103,4 @@ if uploaded_file is not None:
              with tab2:
                top_docs_topic0 = tmp.get_top_docs(topic_abs, model=model, docs_num=10, topics=[num_bitopic_vis])
                st.subheader('Top 10 documents')
-               st.write(top_docs_topic0)
+               st.dataframe(top_docs_topic0)
