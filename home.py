@@ -129,7 +129,7 @@ if uploaded_file is not None:
              return
                
         num_bitopic = st.slider('Choose number of topics', min_value=4, max_value=20, step=1)
-        bitermdata(num_bitopic)
+        bitermdata(4)
         tab1, tab2 = st.tabs(["Viz", "Owl"])
         with tab1:
           num_bitopic_vis = st.selectbox(
