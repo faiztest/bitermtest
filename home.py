@@ -111,9 +111,9 @@ if uploaded_file is not None:
     elif method is 'Biterm':
         topic_abs = paper.Abstract_stop.values.tolist()
           
-        @st.cache_data
+        #@st.cache_data
         def bitermdata():
-             global model
+             #global model
              X, vocabulary, vocab_dict = btm.get_words_freqs(topic_abs)
              tf = np.array(X.sum(axis=0)).ravel()
              docs_vec = btm.get_vectorized_docs(topic_abs, vocabulary)
@@ -122,8 +122,8 @@ if uploaded_file is not None:
              model = btm.BTM(
                  X, vocabulary, seed=12321, T=num_bitopic, M=20, alpha=50/8, beta=0.01)
              model.fit(biterms, iterations=20)
-             p_zd = model.transform(docs_vec)
-             coherence = model.coherence_
+             #p_zd = model.transform(docs_vec)
+             #coherence = model.coherence_
              return model
              
              
