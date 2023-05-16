@@ -126,7 +126,7 @@ if uploaded_file is not None:
              coherence = model.coherence_
              topics_coords = tmp.prepare_coords(model)
              phi = tmp.get_phi(model)
-             return data
+             return topics_coords, phi
              
              
         num_bitopic = st.slider('Choose number of topics', min_value=8, max_value=20, step=1)
