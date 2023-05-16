@@ -113,7 +113,7 @@ if uploaded_file is not None:
           
         #@st.cache_data
         def bitermdata():
-             global topics_coords, phi
+             global model
              X, vocabulary, vocab_dict = btm.get_words_freqs(topic_abs)
              tf = np.array(X.sum(axis=0)).ravel()
              docs_vec = btm.get_vectorized_docs(topic_abs, vocabulary)
@@ -124,13 +124,13 @@ if uploaded_file is not None:
              model.fit(biterms, iterations=20)
              p_zd = model.transform(docs_vec)
              coherence = model.coherence_
-             topics_coords = tmp.prepare_coords(model)
-             phi = tmp.get_phi(model)
-             return topics_coords, phi
+             return model
              
              
         num_bitopic = st.slider('Choose number of topics', min_value=8, max_value=20, step=1)
         bitermdata()  
+        topics_coords = tmp.prepare_coords(model)
+        phi = tmp.get_phi(model)  
         totaltop = topics_coords.label.values.tolist()
      
         tab1, tab2 = st.tabs(["Viz", "Owl"])
@@ -152,47 +152,3 @@ if uploaded_file is not None:
           #btmvis = tmp.report(width=450, model=model, docs=topic_abs)
           #st.altair_chart(btmvis, use_container_width=True)  
           st.write('hello')
-    
-    #===BERTopic===
-    elif method is 'BERTopic':
-        num_btopic = st.slider('Choose number of topics', min_value=4, max_value=20, step=1)
-        topic_abs = paper.Abstract_stop.values.tolist()
-        topic_time = paper.Year.values.tolist()
-        cluster_model = KMeans(n_clusters=num_btopic)
-        topic_model = BERTopic(hdbscan_model=cluster_model).fit(topic_abs)
-        topics, probs = topic_model.fit_transform(topic_abs)
-        
-        tab1, tab2 = st.tabs(["📈 Generate visualization", "📃 Reference"])
-        with tab1:
-          #===visualization===
-          viz = st.selectbox(
-            'Choose visualization',
-            ('Visualize Topics', 'Visualize Documents', 'Visualize Document Hierarchy', 'Visualize Topic Similarity', 'Visualize Terms', 'Visualize Topics over Time'))
-
-          if viz == 'Visualize Topics':
-                 fig1 = topic_model.visualize_topics()
-                 st.write(fig1)
-
-          elif viz == 'Visualize Documents':
-                 fig2 = topic_model.visualize_documents(topic_abs)
-                 st.write(fig2)
-
-          elif viz == 'Visualize Document Hierarchy':
-                 fig3 = topic_model.visualize_hierarchy(top_n_topics=num_btopic)
-                 st.write(fig3)
-
-          elif viz == 'Visualize Topic Similarity':
-                 fig4 = topic_model.visualize_heatmap(n_clusters=num_btopic-1, width=1000, height=1000)
-                 st.write(fig4)
-
-          elif viz == 'Visualize Terms':
-                 fig5 = topic_model.visualize_barchart(top_n_topics=num_btopic)
-                 st.write(fig5)
-
-          elif viz == 'Visualize Topics over Time':
-                 topics_over_time = topic_model.topics_over_time(topic_abs, topic_time)
-                 fig6 = topic_model.visualize_topics_over_time(topics_over_time)
-                 st.write(fig6)
-                    
-        with tab2:
-          st.markdown('**Grootendorst, M. (2022). BERTopic: Neural topic modeling with a class-based TF-IDF procedure. arXiv preprint arXiv:2203.05794.**')
