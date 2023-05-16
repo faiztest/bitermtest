@@ -79,28 +79,28 @@ if uploaded_file is not None:
         model.fit(biterms, iterations=20)
         p_zd = model.transform(docs_vec)
         coherence = model.coherence_
-        
+        with st.spinner('Visualizing, please wait ....'):
          
-        topics_coords = tmp.prepare_coords(model)
-        phi = tmp.get_phi(model)  
-        totaltop = topics_coords.label.values.tolist()
-     
-        tab1, tab2 = st.tabs(["Visualization", "--------"])
-        with tab1:
-          
-          col1, col2 = st.columns(2)
-          with col1:
-               num_bitopic_vis = st.selectbox(
-                    'Choose topic',
-                    (totaltop))
-               btmvis_coords = tmp.plot_scatter_topics(topics_coords, size_col='size', label_col='label', topic=num_bitopic_vis)
-               st.altair_chart(btmvis_coords, use_container_width=True)
-          with col2:
-               terms_probs = tmp.calc_terms_probs_ratio(phi, topic=num_bitopic_vis, lambda_=1)
-               btmvis_probs = tmp.plot_terms(terms_probs)
-               st.altair_chart(btmvis_probs, use_container_width=True)
-          
-        with tab2:
-          #btmvis = tmp.report(width=450, model=model, docs=topic_abs)
-          #st.altair_chart(btmvis, use_container_width=True)  
-          st.write('hello')
+             topics_coords = tmp.prepare_coords(model)
+             phi = tmp.get_phi(model)  
+             totaltop = topics_coords.label.values.tolist()
+
+             tab1, tab2 = st.tabs(["Visualization", "--------"])
+             with tab1:
+
+               col1, col2 = st.columns(2)
+               with col1:
+                    num_bitopic_vis = st.selectbox(
+                         'Choose topic',
+                         (totaltop))
+                    btmvis_coords = tmp.plot_scatter_topics(topics_coords, size_col='size', label_col='label', topic=num_bitopic_vis)
+                    st.altair_chart(btmvis_coords, use_container_width=True)
+               with col2:
+                    terms_probs = tmp.calc_terms_probs_ratio(phi, topic=num_bitopic_vis, lambda_=1)
+                    btmvis_probs = tmp.plot_terms(terms_probs)
+                    st.altair_chart(btmvis_probs, use_container_width=True)
+
+             with tab2:
+               #btmvis = tmp.report(width=450, model=model, docs=topic_abs)
+               #st.altair_chart(btmvis, use_container_width=True)  
+               st.write('hello')
