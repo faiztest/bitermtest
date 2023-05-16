@@ -117,17 +117,32 @@ if uploaded_file is not None:
         docs_lens = list(map(len, docs_vec))
         biterms = btm.get_biterms(docs_vec)
         model = btm.BTM(
-            X, vocabulary, seed=12321, T=10, M=20, alpha=50/8, beta=0.01)
+            X, vocabulary, seed=12321, T=num_bitopic, M=20, alpha=50/8, beta=0.01)
         model.fit(biterms, iterations=20)
         p_zd = model.transform(docs_vec)
         coherence = model.coherence_
-        #st.write('Score: ', (coherence))
-        #model.labels_
-        btmvis = tmp.report(width=450, model=model, docs=topic_abs)
-        with StringIO() as f:
-          embed_minimal_html(f, [btmvis], title="Biterm")
-          fig_html = f.getvalue()
-        st.components.v1.html(fig_html, width=1500, height=1200, scrolling=True)
+        topics_coords = tmp.prepare_coords(model)
+        totaltop = topics_coords.label.values.tolist()
+        phi = tmp.get_phi(model)
+        num_bitopic_vis = st.selectbox(
+          'Choose topic',
+          (totaltop))
+        
+        col1, col2 = st.columns(3)
+        with col1:
+             btmvis_coords = tmp.plot_scatter_topics(topics_coords, size_col='size', label_col='label', topic=num_bitopic_vis)
+             with StringIO() as f:
+               embed_minimal_html(f, [btmvis_coords], title="Intertopic distance plot")
+               fig_html = f.getvalue()
+             st.components.v1.html(fig_html, width=600, height=1200, scrolling=True)
+     
+        with col2:
+             btmvis_probs = terms_probs = tmp.calc_terms_probs_ratio(phi, topic=num_bitopic_vis, lambda_=1)
+             with StringIO() as f:
+               embed_minimal_html(f, [btmvis_probs], title="Relevant words (terms)")
+               fig_html = f.getvalue()
+             st.components.v1.html(fig_html, width=600, height=1200, scrolling=True)
+          #tmp.report(width=450, model=model, docs=topic_abs)
     
     #===BERTopic===
     elif method is 'BERTopic':
