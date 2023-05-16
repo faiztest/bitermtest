@@ -125,10 +125,11 @@ if uploaded_file is not None:
         totaltop = topics_coords.label.values.tolist()
         phi = tmp.get_phi(model)
         btmvis = tmp.plot_scatter_topics(topics_coords, size_col='size', label_col='label')
-        with StringIO() as g:
-          embed_minimal_html(g, [btmvis], title="BTMVIS")
-          fig_html = g.getvalue()
-        st.components.v1.html(fig_html, width=800, height=1200, scrolling=True)           
+        st.altair_chart(btmvis, use_container_width=True)
+        #with StringIO() as g:
+        #  embed_minimal_html(g, [btmvis], title="BTMVIS")
+        #  fig_html = g.getvalue()
+        #st.components.v1.html(fig_html, width=800, height=1200, scrolling=True)           
     
     #===BERTopic===
     elif method is 'BERTopic':
