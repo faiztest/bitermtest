@@ -111,7 +111,7 @@ if uploaded_file is not None:
     elif method is 'Biterm':
         topic_abs = paper.Abstract_stop.values.tolist()
           
-        @st.cache
+        @st.cache_data
         def bitermdata():
              global topics_coords, phi
              X, vocabulary, vocab_dict = btm.get_words_freqs(topic_abs)
@@ -127,8 +127,9 @@ if uploaded_file is not None:
              topics_coords = tmp.prepare_coords(model)
              phi = tmp.get_phi(model)
              
-        bitermdata()       
+             
         num_bitopic = st.slider('Choose number of topics', min_value=8, max_value=20, step=1)
+        bitermdata()  
         totaltop = topics_coords.label.values.tolist()
      
         tab1, tab2 = st.tabs(["Viz", "Owl"])
