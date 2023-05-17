@@ -90,7 +90,11 @@ if uploaded_file is not None:
         p_zd = model.transform(docs_vec)
         coherence = model.coherence_
         phi = tmp.get_phi(model)
-        topik = biterm_topic()
+        try:
+          topik = biterm_topic()
+        except ValueError:
+          st.error('Please raise the number of topics')
+          
         totaltop = topik.label.values.tolist()
         #countop = len(totaltop)
         #if num_bitopic is not countop:
