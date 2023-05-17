@@ -39,13 +39,11 @@ st.subheader('Put your CSV file here ...')
 
 #speedup biterm
 
-topics_coords = ()
-totaltop = ()
 @st.cache_data
 def visup_biterm():
-     global topics_coords, totaltop
+     global topics_coords
      topics_coords = tmp.prepare_coords(model)
-     return data
+     return topics_coords
      
      
 
