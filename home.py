@@ -37,16 +37,7 @@ st.set_page_config(
 st.header("Topic Modeling")
 st.subheader('Put your CSV file here ...')
 
-#speedup biterm
-
-@st.cache
-def visup_biterm():
-     global topics_coords
-     topics_coords = tmp.prepare_coords(model)
-     return topics_coords
      
-     
-
 #===upload file===
 uploaded_file = st.file_uploader("Choose a file")
 if uploaded_file is not None:
@@ -93,25 +84,22 @@ if uploaded_file is not None:
         phi = tmp.get_phi(model)  
         
         with st.spinner('Visualizing, please wait ....'):
-             visup_biterm()
-             totaltop = topics_coords.label.values.tolist()
-          
-             tab1, tab2 = st.tabs(["Visualization", "Documents"])
-             with tab1:
-
-               col1, col2 = st.columns(2)
-               with col1:
+             option_bi = st.selectbox(
+               'Choose visualization',
+               ('Visualize Topics', 'Visualize Terms'))
+             
+             if option_bi == 'Visualize Topics':
+               with st.spinner('Visualizing, please wait ....'):
+                    topics_coords = tmp.prepare_coords(model)
+                    btmvis_coords = tmp.plot_scatter_topics(topics_coords, size_col='size', label_col='label')
+                    st.altair_chart(btmvis_coords, width=800, height=800)
+                    
+             elif option_bi == 'Visualize Terms':
+                    totaltop = topics_coords.label.values.tolist()
                     num_bitopic_vis = st.selectbox(
                          'Choose topic',
                          (totaltop))
-                    btmvis_coords = tmp.plot_scatter_topics(topics_coords, size_col='size', label_col='label', topic=num_bitopic_vis)
-                    st.altair_chart(btmvis_coords, use_container_width=True)
-               with col2:
                     terms_probs = tmp.calc_terms_probs_ratio(phi, topic=num_bitopic_vis, lambda_=1)
                     btmvis_probs = tmp.plot_terms(terms_probs)
                     st.altair_chart(btmvis_probs, use_container_width=True)
-
-             with tab2:
-               top_docs_topic0 = tmp.get_top_docs(topic_abs, model=model, docs_num=10, topics=[num_bitopic_vis])
-               st.subheader('Top 10 documents')
-               st.dataframe(top_docs_topic0)
+          
