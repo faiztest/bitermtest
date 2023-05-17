@@ -38,7 +38,7 @@ st.header("Topic Modeling")
 st.subheader('Put your CSV file here ...')
 
 @st.cache_resource
-def topik():
+def biterm_topic():
      topics_coords = tmp.prepare_coords(model)
      return topics_coords
 
@@ -90,7 +90,7 @@ if uploaded_file is not None:
         p_zd = model.transform(docs_vec)
         coherence = model.coherence_
         phi = tmp.get_phi(model)
-        topik = topik()
+        topik = biterm_topic()
         totaltop = topik.label.values.tolist()
         #countop = len(totaltop)
         #if num_bitopic is not countop:
