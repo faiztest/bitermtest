@@ -23,7 +23,7 @@ import streamlit.components.v1 as components
 from io import StringIO
 from ipywidgets.embed import embed_minimal_html
 from nltk.stem.snowball import SnowballStemmer
-from biterm.cbtm import oBTM
+from biterm.btm import oBTM
 from sklearn.feature_extraction.text import CountVectorizer
 from biterm.utility import vec_to_biterms, topic_summuary
 
@@ -74,12 +74,12 @@ if uploaded_file is not None:
     biterms = vec_to_biterms(X)
 
     # create btm
-    btm = oBTM(num_topics=20, V=vocab)
+    btm = oBTM(num_topics=10, V=vocab)
 
     print("\n\n Train Online BTM ..")
     for i in range(0, len(biterms), 100): # prozess chunk of 200 texts
         biterms_chunk = biterms[i:i + 100]
-        btm.fit(biterms_chunk, iterations=50)
+        btm.fit(biterms_chunk, iterations=20)
     topics = btm.transform(biterms)
 
     print("\n\n Visualize Topics ..")
