@@ -37,7 +37,12 @@ st.set_page_config(
 st.header("Topic Modeling")
 st.subheader('Put your CSV file here ...')
 
-     
+@st.cache_resource
+def topik()
+     topics_coords = tmp.prepare_coords(model)
+     return topics_coords
+
+
 #===upload file===
 uploaded_file = st.file_uploader("Choose a file")
 if uploaded_file is not None:
@@ -82,8 +87,7 @@ if uploaded_file is not None:
         p_zd = model.transform(docs_vec)
         coherence = model.coherence_
         phi = tmp.get_phi(model)
-        topics_coords = tmp.prepare_coords(model)
-        topik = topics_coords
+        topik = topik()
         
         with st.spinner('Visualizing, please wait ....'):
              option_bi = st.selectbox(
