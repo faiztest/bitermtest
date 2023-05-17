@@ -86,8 +86,8 @@ if uploaded_file is not None:
         model.fit(biterms, iterations=20)
         p_zd = model.transform(docs_vec)
         coherence = model.coherence_
-        phi = tmp.get_phi(model)
         col = phi.columns
+        phi = tmp.get_phi(model)
         topik = topik()
         totaltop = topik.label.values.tolist()
         #countop = len(totaltop)
