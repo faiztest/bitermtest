@@ -92,7 +92,7 @@ if uploaded_file is not None:
                with st.spinner('Visualizing, please wait ....'):
                     topics_coords = tmp.prepare_coords(model)
                     btmvis_coords = tmp.plot_scatter_topics(topics_coords, size_col='size', label_col='label')
-                    st.altair_chart(btmvis_coords, width=800, height=800)
+                    st.altair_chart(btmvis_coords, use_container_width=False)
                     
              elif option_bi == 'Visualize Terms':
                     totaltop = topics_coords.label.values.tolist()
