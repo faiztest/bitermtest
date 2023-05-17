@@ -103,9 +103,9 @@ if uploaded_file is not None:
                     'Choose topic',
                     (totaltop))
                btmvis_coords = tmp.plot_scatter_topics(topik, size_col='size', label_col='label', topic=num_bitopic_vis)
-               st.altair_chart(btmvis_coords, use_container_width=False)
+               st.altair_chart(btmvis_coords, use_container_width=True)
              with col2:
-               terms_probs = tmp.calc_terms_probs_ratio(phi, topic=num_bitopic_vis, lambda_=1)
+               terms_probs = tmp.calc_terms_probs_ratio(phi, topic=num_bitopic_vis, lambda_=1, font_size=12)
                btmvis_probs = tmp.plot_terms(terms_probs)
                st.altair_chart(btmvis_probs, use_container_width=True)
                
