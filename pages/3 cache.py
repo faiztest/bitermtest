@@ -92,7 +92,7 @@ if uploaded_file is not None:
         with st.spinner('Visualizing, please wait ....'):
              totaltop = topik.label.values.tolist()
              countop = len(totaltop)
-             if num_bitopic != countop:
+             if num_bitopic is not countop:
                st.cache_resource.clear()
                
              col1, col2 = st.columns(2)
