@@ -103,7 +103,7 @@ if uploaded_file is not None:
                st.altair_chart(btmvis_coords, use_container_width=True)
              with col2:
                terms_probs = tmp.calc_terms_probs_ratio(phi, topic=num_bitopic_vis, lambda_=1)
-               btmvis_probs = tmp.plot_terms(terms_probs, font_size=12, color_col='tomato')
+               btmvis_probs = tmp.plot_terms(terms_probs, font_size=12)
                st.altair_chart(btmvis_probs, use_container_width=True)
           
         except ValueError:
