@@ -90,15 +90,13 @@ if uploaded_file is not None:
         topik = topik()
         
         with st.spinner('Visualizing, please wait ....'):
-             option_bi = st.selectbox(
-               'Choose visualization',
-               ('Visualize Topics', 'Visualize Terms'))
              totaltop = topik.label.values.tolist()
-             num_bitopic_vis = st.selectbox(
-               'Choose topic',
-               (totaltop))
+               
              col1, col2 = st.columns(2)
              with col1:
+               num_bitopic_vis = st.selectbox(
+                    'Choose topic',
+                    (totaltop))
                btmvis_coords = tmp.plot_scatter_topics(topik, size_col='size', label_col='label', topic=num_bitopic_vis)
                st.altair_chart(btmvis_coords, use_container_width=False)
              with col2:
