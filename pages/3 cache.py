@@ -87,10 +87,11 @@ if uploaded_file is not None:
         p_zd = model.transform(docs_vec)
         coherence = model.coherence_
         phi = tmp.get_phi(model)
+        col = phi.columns
         topik = topik()
         totaltop = topik.label.values.tolist()
-        countop = len(totaltop)
-        if num_bitopic is not countop:
+        #countop = len(totaltop)
+        if num_bitopic is not len(col):
           st.cache_resource.clear()
         
         with st.spinner('Visualizing, please wait ....'):          
