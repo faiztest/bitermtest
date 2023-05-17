@@ -82,7 +82,7 @@ if uploaded_file is not None:
         topics_coords = tmp.prepare_coords(model)
         phi = tmp.get_phi(model)  
         model.labels_
-        btmvis = tmp.report(model=model, docs=topic_abs, show_docs=False, show_headers=False)
+        btmvis = tmp.report(model=model, docs=topic_abs, show_docs=False, show_headers=False, topics_kws=(topic=5))
         with StringIO() as f:
           embed_minimal_html(f, [btmvis], title="BTM")
           fig_html = f.getvalue()
