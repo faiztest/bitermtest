@@ -79,14 +79,12 @@ if uploaded_file is not None:
         model.fit(biterms, iterations=20)
         p_zd = model.transform(docs_vec)
         coherence = model.coherence_
-        with st.spinner('Visualizing, please wait ....'):
-         
-             topics_coords = tmp.prepare_coords(model)
-             phi = tmp.get_phi(model)  
+        topics_coords = tmp.prepare_coords(model)
+        phi = tmp.get_phi(model)  
 
-             btmvis = tmp.report(model=model, docs=texts)
-             with StringIO() as f:
-                embed_minimal_html(f, [btmvis], title="BTM")
-                fig_html = f.getvalue()
-             st.components.v1.html(fig_html, use_container_width=True, height=800, scrolling=True)
+        btmvis = tmp.report(model=model, show_docs=False)
+        with StringIO() as f:
+          embed_minimal_html(f, [btmvis], title="BTM")
+          fig_html = f.getvalue()
+        st.components.v1.html(fig_html, use_container_width=True, height=800, scrolling=True)
             
