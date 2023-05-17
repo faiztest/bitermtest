@@ -99,7 +99,7 @@ if uploaded_file is not None:
                     num_bitopic_vis = st.selectbox(
                          'Choose topic',
                          (totaltop))
-                    terms_probs = tmp.calc_terms_probs_ratio(phi, topic=num_bitopic_vis, lambda_=1)
+                    terms_probs = tmp.calc_terms_probs_ratio(phi, topic=num_bitopic_vis, lambda_=1, theme=None)
                     btmvis_probs = tmp.plot_terms(terms_probs)
                     st.altair_chart(btmvis_probs, use_container_width=True)
           
