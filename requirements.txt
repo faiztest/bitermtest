@@ -17,7 +17,7 @@ streamlit
 umap-learn
 wordcloud
 ipywidgets==7.6.6
-#biterm
+biterm
 bitermplus
 tmplot
 tomotopy
