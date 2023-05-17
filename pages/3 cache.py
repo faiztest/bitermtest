@@ -37,6 +37,7 @@ st.set_page_config(
 st.header("Topic Modeling")
 st.subheader('Put your CSV file here ...')
 
+topics_coords = ()
 @st.cache_resource
 def topik():
   topics_coords = tmp.prepare_coords(model)
