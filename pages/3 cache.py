@@ -42,6 +42,8 @@ def topik():
      topics_coords = tmp.prepare_coords(model)
      return topics_coords
 
+def reset_data():
+     st.cache_resource.clear()
 
 #===upload file===
 uploaded_file = st.file_uploader("Choose a file")
@@ -74,8 +76,8 @@ if uploaded_file is not None:
         
     #===Biterm===
     if method == 'Biterm':
-        num_bitopic = st.slider('Choose number of topics', min_value=2, max_value=20, step=1)
-        st.cache_resource.clear()
+        num_bitopic = st.slider('Choose number of topics', min_value=2, max_value=20, step=1, on_change=reset_data())
+        #st.cache_resource.clear()
         topic_abs = paper.Abstract_stop.values.tolist()       
         X, vocabulary, vocab_dict = btm.get_words_freqs(topic_abs)
         tf = np.array(X.sum(axis=0)).ravel()
