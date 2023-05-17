@@ -92,16 +92,8 @@ if uploaded_file is not None:
         phi = tmp.get_phi(model)
         try:
           topik = biterm_topic()
-        except ValueError:
-          st.error('Please raise the number of topics')
-        topik = biterm_topic()
-        totaltop = topik.label.values.tolist()  
-        
-        #countop = len(totaltop)
-        #if num_bitopic is not countop:
-          #st.cache_resource.clear()
-        
-        with st.spinner('Visualizing, please wait ....'):          
+          totaltop = topik.label.values.tolist()
+          with st.spinner('Visualizing, please wait ....'):          
              col1, col2 = st.columns(2)
              with col1:
                num_bitopic_vis = st.selectbox(
@@ -113,4 +105,9 @@ if uploaded_file is not None:
                terms_probs = tmp.calc_terms_probs_ratio(phi, topic=num_bitopic_vis, lambda_=1)
                btmvis_probs = tmp.plot_terms(terms_probs, font_size=12)
                st.altair_chart(btmvis_probs, use_container_width=True)
-               
+          
+        except ValueError:
+          st.error('Please raise the number of topics')
+        
+        
+  
