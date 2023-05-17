@@ -93,18 +93,15 @@ if uploaded_file is not None:
              option_bi = st.selectbox(
                'Choose visualization',
                ('Visualize Topics', 'Visualize Terms'))
-             
-             if option_bi == 'Visualize Topics':
-               with st.spinner('Visualizing, please wait ....'):
-                    btmvis_coords = tmp.plot_scatter_topics(topik, size_col='size', label_col='label')
-                    st.altair_chart(btmvis_coords, use_container_width=False)
-                    
-             elif option_bi == 'Visualize Terms':
-                    totaltop = topik.label.values.tolist()
-                    num_bitopic_vis = st.selectbox(
-                         'Choose topic',
-                         (totaltop))
-                    terms_probs = tmp.calc_terms_probs_ratio(phi, topic=num_bitopic_vis, lambda_=1)
-                    btmvis_probs = tmp.plot_terms(terms_probs)
-                    st.altair_chart(btmvis_probs, use_container_width=True)
-          
+             totaltop = topik.label.values.tolist()
+             num_bitopic_vis = st.selectbox(
+               'Choose topic',
+               (totaltop))
+             col1, col2 = st.columns(2)
+             with col1:
+               btmvis_coords = tmp.plot_scatter_topics(topik, size_col='size', label_col='label', topic==num_bitopic_vis)
+               st.altair_chart(btmvis_coords, use_container_width=False)
+             with col2:
+               terms_probs = tmp.calc_terms_probs_ratio(phi, topic=num_bitopic_vis, lambda_=1)
+               btmvis_probs = tmp.plot_terms(terms_probs)
+               st.altair_chart(btmvis_probs, use_container_width=True)
