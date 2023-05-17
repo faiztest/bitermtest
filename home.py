@@ -25,6 +25,7 @@ from ipywidgets.embed import embed_minimal_html
 from nltk.stem.snowball import SnowballStemmer
 import bitermplus as btm
 import tmplot as tmp
+import tomotopy
 
 
 #===config===
