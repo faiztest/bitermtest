@@ -80,10 +80,12 @@ if uploaded_file is not None:
         model.fit(biterms, iterations=20)
         p_zd = model.transform(docs_vec)
         coherence = model.coherence_
-        topics_coords = tmp.prepare_coords(model)
+        
         phi = tmp.get_phi(model)  
-        totaltop = topics_coords.label.values.tolist()
+        
         with st.spinner('Visualizing, please wait ....'):
+             topics_coords = tmp.prepare_coords(model)
+             totaltop = topics_coords.label.values.tolist()
 
              tab1, tab2 = st.tabs(["Visualization", "Documents"])
              with tab1:
