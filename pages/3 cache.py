@@ -92,10 +92,10 @@ if uploaded_file is not None:
         phi = tmp.get_phi(model)
         try:
           topik = biterm_topic()
-          totaltop = topik.label.values.tolist()
         except ValueError:
           st.error('Please raise the number of topics')
-          
+        topik = biterm_topic()
+        totaltop = topik.label.values.tolist()  
         
         #countop = len(totaltop)
         #if num_bitopic is not countop:
