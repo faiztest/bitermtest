@@ -37,6 +37,14 @@ st.set_page_config(
 st.header("Topic Modeling")
 st.subheader('Put your CSV file here ...')
 
+#speedup biterm
+@st.cache
+def visup_biterm():
+     global topics_coords, totaltop
+     topics_coords = tmp.prepare_coords(model)
+     totaltop = topics_coords.label.values.tolist()
+     
+
 #===upload file===
 uploaded_file = st.file_uploader("Choose a file")
 if uploaded_file is not None:
@@ -80,13 +88,11 @@ if uploaded_file is not None:
         model.fit(biterms, iterations=20)
         p_zd = model.transform(docs_vec)
         coherence = model.coherence_
-        
         phi = tmp.get_phi(model)  
         
         with st.spinner('Visualizing, please wait ....'):
-             topics_coords = tmp.prepare_coords(model)
-             totaltop = topics_coords.label.values.tolist()
-
+             visup_biterm()
+          
              tab1, tab2 = st.tabs(["Visualization", "Documents"])
              with tab1:
 
