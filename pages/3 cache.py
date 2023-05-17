@@ -37,11 +37,6 @@ st.set_page_config(
 st.header("Topic Modeling")
 st.subheader('Put your CSV file here ...')
 
-@st.cache_resource
-def topik():
-  global topics_coords
-  topics_coords = tmp.prepare_coords(model)
-  return topics_coords
      
 #===upload file===
 uploaded_file = st.file_uploader("Choose a file")
@@ -87,7 +82,8 @@ if uploaded_file is not None:
         p_zd = model.transform(docs_vec)
         coherence = model.coherence_
         phi = tmp.get_phi(model)
-        topik()
+        topics_coords = tmp.prepare_coords(model)
+        topik = topics_coords
         
         with st.spinner('Visualizing, please wait ....'):
              option_bi = st.selectbox(
@@ -96,11 +92,11 @@ if uploaded_file is not None:
              
              if option_bi == 'Visualize Topics':
                with st.spinner('Visualizing, please wait ....'):
-                    btmvis_coords = tmp.plot_scatter_topics(topics_coords, size_col='size', label_col='label')
+                    btmvis_coords = tmp.plot_scatter_topics(topik, size_col='size', label_col='label')
                     st.altair_chart(btmvis_coords, use_container_width=False)
                     
              elif option_bi == 'Visualize Terms':
-                    totaltop = topics_coords.label.values.tolist()
+                    totaltop = topik.label.values.tolist()
                     num_bitopic_vis = st.selectbox(
                          'Choose topic',
                          (totaltop))
