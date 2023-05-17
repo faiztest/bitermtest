@@ -68,7 +68,7 @@ if uploaded_file is not None:
     X = vec.fit_transform(topic_abs).toarray()
 
     # get vocabulary
-    vocab = np.array(vec.get_feature_names())
+    vocab = np.array(vec.get_feature_names_out())
 
     # get biterms
     biterms = vec_to_biterms(X)
