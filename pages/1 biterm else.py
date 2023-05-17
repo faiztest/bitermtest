@@ -86,5 +86,5 @@ if uploaded_file is not None:
         with StringIO() as f:
           embed_minimal_html(f, [btmvis], title="BTM")
           fig_html = f.getvalue()
-        st.components.v1.html(fig_html, use_container_width=True, height=800, scrolling=True)
+        st.components.v1.html(fig_html, width=None, height=800, scrolling=True)
             
