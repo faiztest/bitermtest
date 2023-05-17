@@ -75,6 +75,7 @@ if uploaded_file is not None:
     #===Biterm===
     if method == 'Biterm':
         num_bitopic = st.slider('Choose number of topics', min_value=2, max_value=20, step=1)
+        st.cache_resource.clear()
         topic_abs = paper.Abstract_stop.values.tolist()       
         X, vocabulary, vocab_dict = btm.get_words_freqs(topic_abs)
         tf = np.array(X.sum(axis=0)).ravel()
@@ -86,13 +87,12 @@ if uploaded_file is not None:
         model.fit(biterms, iterations=20)
         p_zd = model.transform(docs_vec)
         coherence = model.coherence_
-        col = phi.columns
         phi = tmp.get_phi(model)
         topik = topik()
         totaltop = topik.label.values.tolist()
         #countop = len(totaltop)
-        if num_bitopic is not len(col):
-          st.cache_resource.clear()
+        #if num_bitopic is not countop:
+          #st.cache_resource.clear()
         
         with st.spinner('Visualizing, please wait ....'):          
              col1, col2 = st.columns(2)
