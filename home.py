@@ -40,9 +40,10 @@ st.subheader('Put your CSV file here ...')
 #speedup biterm
 @st.cache
 def visup_biterm():
-     global topics_coords, totaltop
+     #global topics_coords, totaltop
      topics_coords = tmp.prepare_coords(model)
      totaltop = topics_coords.label.values.tolist()
+     return data
      
 
 #===upload file===
