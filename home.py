@@ -81,7 +81,8 @@ if uploaded_file is not None:
         model.fit(biterms, iterations=20)
         p_zd = model.transform(docs_vec)
         coherence = model.coherence_
-        phi = tmp.get_phi(model)  
+        phi = tmp.get_phi(model)
+        topics_coords = tmp.prepare_coords(model)
         
         with st.spinner('Visualizing, please wait ....'):
              option_bi = st.selectbox(
@@ -90,7 +91,6 @@ if uploaded_file is not None:
              
              if option_bi == 'Visualize Topics':
                with st.spinner('Visualizing, please wait ....'):
-                    topics_coords = tmp.prepare_coords(model)
                     btmvis_coords = tmp.plot_scatter_topics(topics_coords, size_col='size', label_col='label')
                     st.altair_chart(btmvis_coords, use_container_width=False)
                     
