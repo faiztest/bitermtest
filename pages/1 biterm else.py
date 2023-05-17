@@ -83,8 +83,9 @@ if uploaded_file is not None:
         phi = tmp.get_phi(model)  
 
         btmvis = tmp.report(model=model, docs=topic_abs, show_docs=False)
-        with StringIO() as f:
-          embed_minimal_html(f, [btmvis], title="BTM")
-          fig_html = f.getvalue()
-        st.components.v1.html(fig_html, width=None, height=800, scrolling=True)
+        #with StringIO() as f:
+        #  embed_minimal_html(f, [btmvis], title="BTM")
+        #  fig_html = f.getvalue()
+        #st.components.v1.html(fig_html, width=None, height=800, scrolling=True)
+        st.vega_lite_chart(data=btmvis, spec=None, use_container_width=False, theme="streamlit")
             
