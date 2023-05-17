@@ -76,7 +76,7 @@ if uploaded_file is not None:
         
     #===Biterm===
     if method == 'Biterm':
-        num_bitopic = st.slider('Choose number of topics', min_value=2, max_value=20, step=1, on_change=reset_data())
+        num_bitopic = st.slider('Choose number of topics', min_value=2, max_value=20, step=1, on_change=reset_data)
         #st.cache_resource.clear()
         topic_abs = paper.Abstract_stop.values.tolist()       
         X, vocabulary, vocab_dict = btm.get_words_freqs(topic_abs)
