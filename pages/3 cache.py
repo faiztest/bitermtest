@@ -99,7 +99,7 @@ if uploaded_file is not None:
                (totaltop))
              col1, col2 = st.columns(2)
              with col1:
-               btmvis_coords = tmp.plot_scatter_topics(topik, size_col='size', label_col='label', topic==num_bitopic_vis)
+               btmvis_coords = tmp.plot_scatter_topics(topik, size_col='size', label_col='label', topic=num_bitopic_vis)
                st.altair_chart(btmvis_coords, use_container_width=False)
              with col2:
                terms_probs = tmp.calc_terms_probs_ratio(phi, topic=num_bitopic_vis, lambda_=1)
