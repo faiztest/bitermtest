@@ -39,6 +39,7 @@ st.subheader('Put your CSV file here ...')
 
 @st.cache_resource
 def topik():
+  global topics_coords
   topics_coords = tmp.prepare_coords(model)
   return topics_coords
      
