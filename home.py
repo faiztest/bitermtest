@@ -38,9 +38,10 @@ st.header("Topic Modeling")
 st.subheader('Put your CSV file here ...')
 
 #speedup biterm
-#@st.cache
+
 topics_coords = ()
 totaltop = ()
+@st.cache_data
 def visup_biterm():
      global topics_coords, totaltop
      topics_coords = tmp.prepare_coords(model)
