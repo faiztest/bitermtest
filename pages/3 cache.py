@@ -108,4 +108,7 @@ if uploaded_file is not None:
                terms_probs = tmp.calc_terms_probs_ratio(phi, topic=num_bitopic_vis, lambda_=1)
                btmvis_probs = tmp.plot_terms(terms_probs)
                #st.altair_chart(btmvis_probs, use_container_width=True)
-               components.html(py_lda_vis_html, width=800, height=800)
+               with StringIO() as f:
+                    embed_minimal_html(f, [btmvis_probs], title="Hey!")
+                    fig_html = f.getvalue()
+               st.components.v1.html(fig_html, width=800, height=1200, scrolling=True)
