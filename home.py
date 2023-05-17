@@ -45,7 +45,7 @@ totaltop = ()
 def visup_biterm():
      global topics_coords, totaltop
      topics_coords = tmp.prepare_coords(model)
-     totaltop = topics_coords.label.values.tolist()
+     return data
      
      
 
@@ -96,6 +96,7 @@ if uploaded_file is not None:
         
         with st.spinner('Visualizing, please wait ....'):
              visup_biterm()
+             totaltop = topics_coords.label.values.tolist()
           
              tab1, tab2 = st.tabs(["Visualization", "Documents"])
              with tab1:
