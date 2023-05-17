@@ -88,13 +88,12 @@ if uploaded_file is not None:
         coherence = model.coherence_
         phi = tmp.get_phi(model)
         topik = topik()
+        totaltop = topik.label.values.tolist()
+        countop = len(totaltop)
+        if num_bitopic is not countop:
+          st.cache_resource.clear()
         
-        with st.spinner('Visualizing, please wait ....'):
-             totaltop = topik.label.values.tolist()
-             countop = len(totaltop)
-             if num_bitopic is not countop:
-               st.cache_resource.clear()
-               
+        with st.spinner('Visualizing, please wait ....'):          
              col1, col2 = st.columns(2)
              with col1:
                num_bitopic_vis = st.selectbox(
