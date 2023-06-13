@@ -44,13 +44,15 @@ st.header("Topic Modeling")
 st.subheader('Put your file here...')
 
 #========================
-components.html(
-    """
-    <a href='http://www.freevisitorcounters.com'>more information</a> <script type='text/javascript' src='https://www.freevisitorcounters.com/auth.php?id=fc552694413c22c0f01bb71c2753265983d66bfb'></script> 
-    <script type="text/javascript" src="https://www.freevisitorcounters.com/en/home/counter/1041479/t/0"></script>
-    """,
-    height=100,
-)
+
+with st.sidebar:
+     components.html(
+         """
+         <a href='http://www.freevisitorcounters.com'>more information</a> <script type='text/javascript' src='https://www.freevisitorcounters.com/auth.php?id=fc552694413c22c0f01bb71c2753265983d66bfb'></script> 
+         <script type="text/javascript" src="https://www.freevisitorcounters.com/en/home/counter/1041479/t/0"></script>
+         """,
+         height=100,
+     )
 
 
 def reset_pylda():
