@@ -34,15 +34,6 @@ import en_core_web_sm
 import pipeline
 import streamlit.components.v1 as components
 
-components.html(
-    """
-    <a href='http://www.freevisitorcounters.com'>more information</a> <script type='text/javascript' src='https://www.freevisitorcounters.com/auth.php?id=fc552694413c22c0f01bb71c2753265983d66bfb'></script> 
-    <script type="text/javascript" src="https://www.freevisitorcounters.com/en/home/counter/1041479/t/0"></script>
-    """,
-    height=100,
-)
-
-
 #===config===
 st.set_page_config(
      page_title="Coconut",
@@ -53,18 +44,13 @@ st.header("Topic Modeling")
 st.subheader('Put your file here...')
 
 #========================
-@st.cache_resource
-def create_list():
-    l = [1, 2, 3]
-    return l
-
-l = create_list()
-first_list_value = l[0]
-l[0] = first_list_value + 1
-
-st.write("l[0] is:", l[0])
-
-
+components.html(
+    """
+    <a href='http://www.freevisitorcounters.com'>more information</a> <script type='text/javascript' src='https://www.freevisitorcounters.com/auth.php?id=fc552694413c22c0f01bb71c2753265983d66bfb'></script> 
+    <script type="text/javascript" src="https://www.freevisitorcounters.com/en/home/counter/1041479/t/0"></script>
+    """,
+    height=100,
+)
 
 
 def reset_pylda():
