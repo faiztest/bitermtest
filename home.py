@@ -44,6 +44,29 @@ st.header("Topic Modeling")
 st.subheader('Put your file here...')
 
 #========================
+@st.cache_resource
+def create_listx():
+    r = [1, 2, 3]
+    return l
+
+r = create_listx()
+first_list_valuer = l[0]
+r[0] = first_list_valuer + 1
+
+st.write("r r[0] is:", r[0])
+
+#========================
+@st.cache_data
+def create_list():
+    l = [1, 2, 3]
+    return l
+
+l = create_list()
+first_list_value = l[0]
+l[0] = first_list_value + 1
+
+st.write("d l[0] is:", l[0])
+
 
 def reset_pylda():
      pylda.clear()
