@@ -43,6 +43,21 @@ st.set_page_config(
 st.header("Topic Modeling")
 st.subheader('Put your file here...')
 
+========================
+@st.cache_resource
+def create_list():
+    l = [1, 2, 3]
+    return l
+
+l = create_list()
+first_list_value = l[0]
+l[0] = first_list_value + 1
+
+st.write("l[0] is:", l[0])
+
+
+
+
 def reset_pylda():
      pylda.clear()
 
