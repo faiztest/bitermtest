@@ -47,7 +47,7 @@ st.subheader('Put your file here...')
 @st.cache_resource
 def create_listx():
     r = [1, 2, 3]
-    return l
+    return r
 
 r = create_listx()
 first_list_valuer = l[0]
