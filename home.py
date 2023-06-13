@@ -50,7 +50,7 @@ def create_listx():
     return r
 
 r = create_listx()
-first_list_valuer = l[0]
+first_list_valuer = r[0]
 r[0] = first_list_valuer + 1
 
 st.write("r r[0] is:", r[0])
