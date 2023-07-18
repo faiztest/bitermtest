@@ -263,8 +263,11 @@ if uploaded_file is not None:
                               (totaltop), on_change=reset_biterm)
                          btmvis_coords = biterm_map(extype)
                          st.altair_chart(btmvis_coords)
-                         httml = btmvis_coords.save('chart.html')
-                         st.write(httml)
+                         btmvis_coords.save('chart.html')
+                         HtmlFile = open('chart.html', 'r', encoding='utf-8')
+                         source_code = HtmlFile.read() 
+                         print(source_code)
+                         components.html(source_code)
                          
                          alt.renderers.enable('altair_saver', ['vega-lite', 'png'])
                          btmvis_coords.save('1.png')
