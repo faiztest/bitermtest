@@ -263,9 +263,11 @@ if uploaded_file is not None:
                               (totaltop), on_change=reset_biterm)
                          btmvis_coords = biterm_map(extype)
                          st.altair_chart(btmvis_coords)
-                         coba = st.altair_chart(btmvis_coords)
-                         btmvis_coords.save('1.png')
+                         httml = btmvis_coords.save('chart.html')
+                         st.write(httml)
                          
+                         alt.renderers.enable('altair_saver', ['vega-lite', 'png'])
+                         btmvis_coords.save('1.png')
                          image1 = Image.open('1.png')
                          st.image(image1, caption='Sunrise by 1')
                          #coba.save('2.png')
