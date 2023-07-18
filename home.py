@@ -298,7 +298,7 @@ if uploaded_file is not None:
                               )
                              
                          img_biterm_bar(extype)   
-                         with open("biterm_img_bar.png", "rb") as file:
+                         with open("biterm_bar_img.png", "rb") as file:
                               btn = st.download_button(
                                    label="Download image",
                                    data=file,
