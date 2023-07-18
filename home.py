@@ -269,13 +269,24 @@ if uploaded_file is not None:
                          print(source_code)
                          components.html(source_code)
                          
-                         alt.renderers.enable('altair_saver', ['vega-lite', 'png'])
-                         btmvis_coords.save('1.png')
-                         image1 = Image.open('1.png')
-                         st.image(image1, caption='Sunrise by 1')
-                         #coba.save('2.png')
-                         #image2 = Image.open('2.png')
-                         #st.image(image2, caption='Sunrise by 2')
+                         @st.cache_data(ttl=3600, show_spinner=False)
+                         def img_biterm(extype):
+                              hti = Html2Image()
+                              hti.browser.flags = ['--default-background-color=ffffff', '--hide-scrollbars']
+                              css = "body {background: white;}"
+                              hti.screenshot(
+                                   other_file='chart.html', css_str=css, size=(1500, 800),
+                                   save_as='biterm_img.png'
+                              )
+                             
+                         img_biterm(extype)   
+                         with open("biterm_img.png", "rb") as file:
+                              btn = st.download_button(
+                                   label="Download image",
+                                   data=file,
+                                   file_name="biterm_img.png",
+                                   mime="image/png"
+                                   )
                          
                     with col2:
                          btmvis_probs = biterm_bar(extype)
