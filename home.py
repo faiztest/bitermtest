@@ -34,8 +34,6 @@ import en_core_web_sm
 import pipeline
 import plotly.graph_objects as go
 from html2image import Html2Image
-import altair as alt
-from PIL import Image
 from altair_saver import save
 
 
@@ -262,20 +260,16 @@ if uploaded_file is not None:
                               'Choose topic',
                               (totaltop), on_change=reset_biterm)
                          btmvis_coords = biterm_map(extype)
-                         st.altair_chart(btmvis_coords)
-                         btmvis_coords.save('chart.html')
-                         HtmlFile = open('chart.html', 'r', encoding='utf-8')
-                         source_code = HtmlFile.read() 
-                         print(source_code)
-                         components.html(source_code)
+                         st.altair_chart(btmvis_coords)                     
                          
                          @st.cache_data(ttl=3600, show_spinner=False)
                          def img_biterm(extype):
+                              btmvis_coords.save('chart1.html')
                               hti = Html2Image()
                               hti.browser.flags = ['--default-background-color=ffffff', '--hide-scrollbars']
                               css = "body {background: white;}"
                               hti.screenshot(
-                                   other_file='chart.html', css_str=css, size=(1500, 800),
+                                   other_file='chart1.html', css_str=css, size=(500, 500),
                                    save_as='biterm_img.png'
                               )
                              
@@ -291,6 +285,26 @@ if uploaded_file is not None:
                     with col2:
                          btmvis_probs = biterm_bar(extype)
                          st.altair_chart(btmvis_probs, use_container_width=True)
+                         
+                         @st.cache_data(ttl=3600, show_spinner=False)
+                         def img_biterm_bar(extype):
+                              btmvis_probs.save('chart2.html')
+                              hti = Html2Image()
+                              hti.browser.flags = ['--default-background-color=ffffff', '--hide-scrollbars']
+                              css = "body {background: white;}"
+                              hti.screenshot(
+                                   other_file='chart2.html', css_str=css, size=(1000, 800),
+                                   save_as='biterm_bar_img.png'
+                              )
+                             
+                         img_biterm_bar(extype)   
+                         with open("biterm_img_bar.png", "rb") as file:
+                              btn = st.download_button(
+                                   label="Download image",
+                                   data=file,
+                                   file_name="biterm_bar_img.png",
+                                   mime="image/png"
+                                   )
 
              #except ValueError:
                    #st.error('🙇‍♂️ Please raise the number of topics and click submit')
