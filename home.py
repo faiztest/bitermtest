@@ -274,13 +274,7 @@ if uploaded_file is not None:
                               )
                              
                          img_biterm(extype)   
-                         with open("biterm_img.png", "rb") as file:
-                              btn = st.download_button(
-                                   label="Download image",
-                                   data=file,
-                                   file_name="biterm_img.png",
-                                   mime="image/png"
-                                   )
+                         
                          
                     with col2:
                          btmvis_probs = biterm_bar(extype)
@@ -298,13 +292,21 @@ if uploaded_file is not None:
                               )
                              
                          img_biterm_bar(extype)   
-                         with open("biterm_bar_img.png", "rb") as file:
-                              btn = st.download_button(
-                                   label="Download image",
-                                   data=file,
-                                   file_name="biterm_bar_img.png",
-                                   mime="image/png"
-                                   )
+                         
+                    with open("biterm_img.png", "rb") as file:
+                         btn = st.download_button(
+                              label="Download topic scatter plot",
+                              data=file,
+                              file_name="biterm_img.png",
+                              mime="image/png"
+                              )
+                    with open("biterm_bar_img.png", "rb") as file:
+                         btn = st.download_button(
+                              label="Download relevant words (terms)",
+                              data=file,
+                              file_name="biterm_bar_img.png",
+                              mime="image/png"
+                              )
 
              #except ValueError:
                    #st.error('🙇‍♂️ Please raise the number of topics and click submit')
