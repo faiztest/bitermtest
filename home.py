@@ -265,11 +265,12 @@ if uploaded_file is not None:
                          st.altair_chart(btmvis_coords)
                          coba = st.altair_chart(btmvis_coords)
                          btmvis_coords.save('1.png')
-                         coba.save('2.png')
+                         
                          image1 = Image.open('1.png')
                          st.image(image1, caption='Sunrise by 1')
-                         image2 = Image.open('2.png')
-                         st.image(image2, caption='Sunrise by 2')
+                         #coba.save('2.png')
+                         #image2 = Image.open('2.png')
+                         #st.image(image2, caption='Sunrise by 2')
                          
                     with col2:
                          btmvis_probs = biterm_bar(extype)
