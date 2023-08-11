@@ -313,7 +313,7 @@ if uploaded_file is not None:
         @st.cache_data(ttl=3600, show_spinner=False)
         def Vis_Barchart(extype):
           vis_bar_h = math.ceil(num_topic/4)*500
-          fig5 = topic_model.visualize_barchart(top_n_topics=num_topic, n_words=10, width=1820, height=vis_bar_h)
+          fig5 = topic_model.visualize_barchart(top_n_topics=num_topic, n_words=10, height=vis_bar_h)
           return fig5
     
         @st.cache_data(ttl=3600, show_spinner=False)
