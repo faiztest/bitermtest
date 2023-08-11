@@ -32,9 +32,8 @@ import sys
 import spacy
 import en_core_web_sm
 import pipeline
-import plotly.graph_objects as go
 from html2image import Html2Image
-from altair_saver import save
+import math
 
 
 #===config===
@@ -89,6 +88,7 @@ def clean_csv(extype):
     paper['Abstract_pre'] = paper['Abstract'].map(lambda x: re.sub('[,:;\.!-?•=]', '', x))
     paper['Abstract_pre'] = paper['Abstract_pre'].map(lambda x: x.lower())
     paper['Abstract_pre'] = paper['Abstract_pre'].map(lambda x: re.sub('©.*', '', x))
+    paper['Abstract_pre'] = paper['Abstract_pre'].str.replace('\u201c|\u201d', '', regex=True) 
           
          #===stopword removal===
     stop = stopwords.words('english')
@@ -260,56 +260,13 @@ if uploaded_file is not None:
                               'Choose topic',
                               (totaltop), on_change=reset_biterm)
                          btmvis_coords = biterm_map(extype)
-                         st.altair_chart(btmvis_coords)                     
-                         
-                         @st.cache_data(ttl=3600, show_spinner=False)
-                         def img_biterm(extype):
-                              btmvis_coords.save('chart1.html')
-                              hti = Html2Image()
-                              hti.browser.flags = ['--default-background-color=ffffff', '--hide-scrollbars']
-                              css = "body {background: white;}"
-                              hti.screenshot(
-                                   other_file='chart1.html', css_str=css, size=(500, 500),
-                                   save_as='biterm_img.png'
-                              )
-                             
-                         img_biterm(extype)   
-                         
-                         
+                         st.altair_chart(btmvis_coords)
                     with col2:
                          btmvis_probs = biterm_bar(extype)
                          st.altair_chart(btmvis_probs, use_container_width=True)
-                         
-                         @st.cache_data(ttl=3600, show_spinner=False)
-                         def img_biterm_bar(extype):
-                              btmvis_probs.save('chart2.html')
-                              hti = Html2Image()
-                              hti.browser.flags = ['--default-background-color=ffffff', '--hide-scrollbars']
-                              css = "body {background: white;}"
-                              hti.screenshot(
-                                   other_file='chart2.html', css_str=css, size=(1000, 800),
-                                   save_as='biterm_bar_img.png'
-                              )
-                             
-                         img_biterm_bar(extype)   
-                         
-                    with open("biterm_img.png", "rb") as file:
-                         btn = st.download_button(
-                              label="Download topic scatter plot",
-                              data=file,
-                              file_name="biterm_img.png",
-                              mime="image/png"
-                              )
-                    with open("biterm_bar_img.png", "rb") as file:
-                         btn = st.download_button(
-                              label="Download relevant words (terms)",
-                              data=file,
-                              file_name="biterm_bar_img.png",
-                              mime="image/png"
-                              )
 
-             #except ValueError:
-                   #st.error('🙇‍♂️ Please raise the number of topics and click submit')
+             except ValueError:
+                   st.error('🙇‍♂️ Please raise the number of topics and click submit')
              except NameError:
                    st.warning('🖱️ Please click Submit')
 
@@ -355,7 +312,8 @@ if uploaded_file is not None:
 
         @st.cache_data(ttl=3600, show_spinner=False)
         def Vis_Barchart(extype):
-          fig5 = topic_model.visualize_barchart(top_n_topics=num_topic, n_words=10)
+          vis_bar_h = math.ceil(num_topic/4)*500
+          fig5 = topic_model.visualize_barchart(top_n_topics=num_topic, n_words=10, width=1820, height=1000)
           return fig5
     
         @st.cache_data(ttl=3600, show_spinner=False)
@@ -363,13 +321,7 @@ if uploaded_file is not None:
           topics_over_time = topic_model.topics_over_time(topic_abs, topic_time)
           fig6 = topic_model.visualize_topics_over_time(topics_over_time)
           return fig6
-
-        @st.cache_data(ttl=3600, show_spinner=False)
-        def img_bert(fig):
-            my_saved_image = "fig.png"
-            fig.write_image(my_saved_image)
-            return my_saved_image
-        
+       
         tab1, tab2, tab3 = st.tabs(["📈 Generate visualization", "📃 Reference", "📓 Recommended Reading"])
         with tab1:
           try:
@@ -384,79 +336,32 @@ if uploaded_file is not None:
                            with st.spinner('Performing computations. Please wait ...'):
                                 fig1 = Vis_Topics(extype)
                                 st.write(fig1)
-                                my_saved_image = img_bert(fig1)
-                                with open(my_saved_image, "rb") as file:
-                                  btn = st.download_button(
-                                       label="Download image",
-                                       data=file,
-                                       file_name="Vis_Topics.png",
-                                       mime="image/png"
-                                       )
           
                     elif viz == 'Visualize Documents':
                            with st.spinner('Performing computations. Please wait ...'):
                                 fig2 = Vis_Documents(extype)
                                 st.write(fig2)
-                                my_saved_image = img_bert(fig2)
-                                with open(my_saved_image, "rb") as file:
-                                  btn = st.download_button(
-                                       label="Download image",
-                                       data=file,
-                                       file_name="Vis_Documents.png",
-                                       mime="image/png"
-                                       )
-          
+                         
                     elif viz == 'Visualize Document Hierarchy':
                            with st.spinner('Performing computations. Please wait ...'):
                                 fig3 = Vis_Hierarchy(extype)
                                 st.write(fig3)
-                                my_saved_image = img_bert(fig3)
-                                with open(my_saved_image, "rb") as file:
-                                  btn = st.download_button(
-                                       label="Download image",
-                                       data=file,
-                                       file_name="Vis_Hierarchy.png",
-                                       mime="image/png"
-                                       )
-          
+                              
                     elif viz == 'Visualize Topic Similarity':
                            with st.spinner('Performing computations. Please wait ...'):
                                 fig4 = Vis_Heatmap(extype)
                                 st.write(fig4)
-                                my_saved_image = img_bert(fig4)
-                                with open(my_saved_image, "rb") as file:
-                                  btn = st.download_button(
-                                       label="Download image",
-                                       data=file,
-                                       file_name="Vis_Similarity.png",
-                                       mime="image/png"
-                                       )
-          
+                                  
                     elif viz == 'Visualize Terms':
                            with st.spinner('Performing computations. Please wait ...'):
                                 fig5 = Vis_Barchart(extype)
                                 st.write(fig5)
-                                my_saved_image = img_bert(fig5)
-                                with open(my_saved_image, "rb") as file:
-                                  btn = st.download_button(
-                                       label="Download image",
-                                       data=file,
-                                       file_name="Vis_Terms.png",
-                                       mime="image/png"
-                                       )
-          
+                                       
                     elif viz == 'Visualize Topics over Time':
                            with st.spinner('Performing computations. Please wait ...'):
                                 fig6 = Vis_ToT(extype)
                                 st.write(fig6)
-                                my_saved_image = img_bert(fig6)
-                                with open(my_saved_image, "rb") as file:
-                                  btn = st.download_button(
-                                       label="Download image",
-                                       data=file,
-                                       file_name="Vis_ToT.png",
-                                       mime="image/png"
-                                       )
+                               
                     
           except ValueError:
                st.error('🙇‍♂️ Please raise the number of topics and click submit')
