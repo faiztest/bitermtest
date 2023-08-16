@@ -314,7 +314,7 @@ if uploaded_file is not None:
 
         @st.cache_data(ttl=3600, show_spinner=False)
         def Vis_Barchart(extype):
-          fig5 = topic_model.visualize_barchart(top_n_topics=num_topic, n_words=10)
+          fig5 = topic_model.visualize_barchart(top_n_topics=num_topic, n_words=5)
           return fig5
     
         @st.cache_data(ttl=3600, show_spinner=False)
