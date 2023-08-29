@@ -108,7 +108,7 @@ def clean_csv(extype):
          words = text.split()
          cleaned_words = [word for word in words if word not in remove_dict]
          return ' '.join(cleaned_words) 
-    paper['Abstract_rem'] = paper['Abstract_lem'].map(remove_words)
+    paper['Abstract_lem'] = paper['Abstract_lem'].map(remove_words)
      
     topic_abs = paper.Abstract_lem.values.tolist()
     return topic_abs, paper
