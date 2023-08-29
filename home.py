@@ -157,7 +157,7 @@ if uploaded_file is not None:
               st.write('Choose...')
          else:
               st.write('Choose...')
-    if c1.button("Submit", on_click=reset_all):
+    if button("Submit", on_click=reset_all):
          num_topic = num_cho  
            
     #===topic===
