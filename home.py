@@ -142,13 +142,13 @@ if uploaded_file is not None:
     elif extype.endswith('.txt'):
          papers = conv_txt(extype)
           
-    c1, c2 = st.columns([5,5])
+    c1, c2, c3 = st.columns([3,2,5])
     method = c1.selectbox(
             'Choose method',
             ('Choose...', 'pyLDA', 'Biterm', 'BERTopic'), on_change=reset_all)
-    words_to_remove = c1.text_input("Remove specific words. Separate words by semicolons (;)") 
     num_cho = c2.number_input('Choose number of topics', min_value=2, max_value=30, value=2)
-    c2.info("Don't do anything during the computing", icon="⚠️")
+    words_to_remove = c3.text_input("Remove specific words. Separate words by semicolons (;)") 
+    c5.info("Don't do anything during the computing", icon="⚠️")
     topic_abs, paper=clean_csv(extype) 
 
     #===advance settings===
@@ -163,7 +163,7 @@ if uploaded_file is not None:
               #st.write('Choose...')
          #else:
               #st.write('Choose...')
-    if st.button("Submit", on_click=reset_all):
+    if c1.button("Submit", on_click=reset_all):
          num_topic = num_cho  
            
     #===topic===
