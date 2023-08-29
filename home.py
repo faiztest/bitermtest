@@ -162,7 +162,7 @@ if uploaded_file is not None:
            
     #===topic===
     if method == 'Choose...':
-        st.write('')
+        st.write(paper)
 
     elif method == 'pyLDA':       
          tab1, tab2, tab3 = st.tabs(["📈 Generate visualization & Calculate coherence", "📃 Reference", "📓 Recommended Reading"])
