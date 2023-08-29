@@ -149,8 +149,8 @@ if uploaded_file is not None:
     with st.expander("Show advance settings"): 
          t1, t2 = st.columns([5,5])
          if method == 'pyLDA':
-              random_state= st.number_input('Random state', value=0 , min_value=0, max_value=None, step=1)
-              chunksize = st.number_input('Chunk size', value=100 , min_value=10, max_value=None, step=1)
+              random_state= t1.number_input('Random state', value=0 , min_value=0, max_value=None, step=1)
+              chunksize = t2.number_input('Chunk size', value=100 , min_value=10, max_value=None, step=1)
          elif method == 'Biterm':
               st.write('Choose...')
          elif method == 'BERTopic':
