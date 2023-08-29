@@ -102,8 +102,7 @@ def clean_csv(extype):
         return ' '.join(words)
     paper['Abstract_lem'] = paper['Abstract_stop'].apply(lemmatize_words)
     for word in rmv_word:
-         pattern = r'\b' + word + r'\b'
-         paper['Abstract_lem'] = paper['Abstract_lem'].str.replace(pattern, '', regex=True) 
+         paper['Abstract_lem'] = paper['Abstract_lem'].map(lambda x: re.sub(word, '', x)) 
      
     topic_abs = paper.Abstract_lem.values.tolist()
     return topic_abs, paper
