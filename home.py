@@ -101,6 +101,8 @@ def clean_csv(extype):
         words = [lemmatizer.lemmatize(word) for word in words]
         return ' '.join(words)
     paper['Abstract_lem'] = paper['Abstract_stop'].apply(lemmatize_words)
+    for value in text_rmv:
+         paper['Abstract_lem'] = paper['Abstract_lem'].str.replace(value, '') 
      
     topic_abs = paper.Abstract_lem.values.tolist()
     return topic_abs, paper
@@ -139,9 +141,10 @@ if uploaded_file is not None:
     method = c1.selectbox(
             'Choose method',
             ('Choose...', 'pyLDA', 'Biterm', 'BERTopic'), on_change=reset_all)
-    c1.info("Don't do anything during the computing", icon="⚠️") 
+    text_rmv = c1.text_input("Remove specific words. Separate concepts by semicolons (;)") 
     num_cho = c2.number_input('Choose number of topics', min_value=2, max_value=30, value=2)
-    if c2.button("Submit", on_click=reset_all):
+    c2.info("Don't do anything during the computing", icon="⚠️")
+    if c1.button("Submit", on_click=reset_all):
          num_topic = num_cho  
            
     #===topic===
@@ -287,7 +290,7 @@ if uploaded_file is not None:
                   min_dist=0.0, metric='cosine', random_state=42)   
           cluster_model = KMeans(n_clusters=num_topic)
           nlp = en_core_web_sm.load(exclude=['tagger', 'parser', 'ner', 'attribute_ruler', 'lemmatizer'])
-          topic_model = BERTopic(embedding_model=nlp, hdbscan_model=cluster_model, language="multilingual", umap_model=umap_model) #.fit(topic_abs)
+          topic_model = BERTopic(embedding_model=nlp, hdbscan_model=cluster_model, language="multilingual", umap_model=umap_model)
           topics, probs = topic_model.fit_transform(topic_abs)
           return topic_model, topic_time, topics, probs
         
@@ -314,7 +317,7 @@ if uploaded_file is not None:
 
         @st.cache_data(ttl=3600, show_spinner=False)
         def Vis_Barchart(extype):
-          fig5 = topic_model.visualize_barchart(top_n_topics=num_topic, n_words=5)
+          fig5 = topic_model.visualize_barchart(top_n_topics=num_topic, n_words=10)
           return fig5
     
         @st.cache_data(ttl=3600, show_spinner=False)
