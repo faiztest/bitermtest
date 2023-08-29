@@ -178,8 +178,8 @@ if uploaded_file is not None:
                  lda_model = LdaModel(corpus=corpus,
                              id2word=id2word,
                              num_topics=num_topic, 
-                             random_state=random_state,
-                             chunksize=chunksize,
+                             random_state=0,
+                             chunksize=100,
                              alpha='auto',
                              per_word_topics=True)
      
