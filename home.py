@@ -102,7 +102,12 @@ def clean_csv(extype):
         return ' '.join(words)
     paper['Abstract_lem'] = paper['Abstract_stop'].apply(lemmatize_words)
 
-    paper['Abstract_lem'] = paper['Abstract_lem'].apply(lambda text: ' '.join([word for word in text.split() if all(rm_word != word for rm_word in rmv_word)]))
+    remove_dict = {word: None for word in rmv_word}
+    def remove_words(text):
+         words = text.split()
+         cleaned_words = [word for word in words if word not in remove_dict]
+         return ' '.join(cleaned_words) 
+    paper['Abstract_lem'] = paper['Abstract_lem'].map(remove_words)
      
     topic_abs = paper.Abstract_lem.values.tolist()
     return topic_abs, paper
