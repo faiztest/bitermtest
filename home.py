@@ -149,8 +149,8 @@ if uploaded_file is not None:
     with st.expander("Show advance settings"): 
          t1, t2 = st.columns([5,5])
          if method == 'pyLDA':
-              random_state= st.number_input(value=0 , min_value=0, max_value=None, value=, step=1)
-              chunksize = st.number_input(value=100 , min_value=10, max_value=None, value=, step=1)
+              random_state= st.number_input(value=0 , min_value=0, max_value=None, step=1)
+              chunksize = st.number_input(value=100 , min_value=10, max_value=None, step=1)
          elif method == 'Biterm':
               st.write('Choose...')
          elif method == 'BERTopic':
@@ -178,8 +178,8 @@ if uploaded_file is not None:
                  lda_model = LdaModel(corpus=corpus,
                              id2word=id2word,
                              num_topics=num_topic, 
-                             random_state=0,
-                             chunksize=100,
+                             random_state=random_state,
+                             chunksize=chunksize,
                              alpha='auto',
                              per_word_topics=True)
      
