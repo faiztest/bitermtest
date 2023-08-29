@@ -148,7 +148,7 @@ if uploaded_file is not None:
             ('Choose...', 'pyLDA', 'Biterm', 'BERTopic'), on_change=reset_all)
     num_cho = c2.number_input('Choose number of topics', min_value=2, max_value=30, value=2)
     words_to_remove = c3.text_input("Remove specific words. Separate words by semicolons (;)") 
-    c5.info("Don't do anything during the computing", icon="⚠️")
+    c3.info("Don't do anything during the computing", icon="⚠️")
     topic_abs, paper=clean_csv(extype) 
 
     #===advance settings===
