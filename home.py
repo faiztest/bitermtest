@@ -141,9 +141,22 @@ if uploaded_file is not None:
     method = c1.selectbox(
             'Choose method',
             ('Choose...', 'pyLDA', 'Biterm', 'BERTopic'), on_change=reset_all)
-    text_rmv = c1.text_input("Remove specific words. Separate concepts by semicolons (;)") 
+    text_rmv = c1.text_input("Remove specific words. Separate words by semicolons (;)", "e.g. Abstract") 
     num_cho = c2.number_input('Choose number of topics', min_value=2, max_value=30, value=2)
     c2.info("Don't do anything during the computing", icon="⚠️")
+
+    #===advance settings===
+    with st.expander("Show advance settings"): 
+         t1, t2 = st.columns([5,5])
+         if method == 'pyLDA':
+              random_state= st.number_input(value=0 , min_value=0, max_value=None, value=, step=1)
+              chunksize = st.number_input(value=100 , min_value=10, max_value=None, value=, step=1)
+         elif method == 'Biterm':
+              st.write('Choose...')
+         elif method == 'BERTopic':
+              st.write('Choose...')
+         else:
+              st.write('Choose...')
     if c1.button("Submit", on_click=reset_all):
          num_topic = num_cho  
            
