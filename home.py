@@ -146,7 +146,7 @@ if uploaded_file is not None:
     topic_abs, paper=clean_csv(extype) 
 
     #===advance settings===
-    st.expander("Show advance settings"): 
+    with st.expander("Show advance settings"): 
          t1, t2 = st.columns([5,5])
          if method == 'pyLDA':
               random_state= st.number_input('Random state', value=0 , min_value=0, max_value=None, step=1)
