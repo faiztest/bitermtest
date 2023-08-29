@@ -101,7 +101,7 @@ def clean_csv(extype):
         words = [lemmatizer.lemmatize(word) for word in words]
         return ' '.join(words)
     paper['Abstract_lem'] = paper['Abstract_stop'].apply(lemmatize_words)
-    for value in text_rmv:
+    for value in rmv_word:
          paper['Abstract_lem'] = paper['Abstract_lem'].str.replace(value, '') 
      
     topic_abs = paper.Abstract_lem.values.tolist()
@@ -136,14 +136,14 @@ if uploaded_file is not None:
     elif extype.endswith('.txt'):
          papers = conv_txt(extype)
           
-    topic_abs, paper=clean_csv(extype)
     c1, c2 = st.columns([5,5])
     method = c1.selectbox(
             'Choose method',
             ('Choose...', 'pyLDA', 'Biterm', 'BERTopic'), on_change=reset_all)
-    text_rmv = c1.text_input("Remove specific words. Separate words by semicolons (;)", "e.g. Abstract") 
+    rmv_word = c1.text_input("Remove specific words. Separate words by semicolons (;)", "e.g. Abstract") 
     num_cho = c2.number_input('Choose number of topics', min_value=2, max_value=30, value=2)
     c2.info("Don't do anything during the computing", icon="⚠️")
+    topic_abs, paper=clean_csv(extype) 
 
     #===advance settings===
     with st.expander("Show advance settings"): 
