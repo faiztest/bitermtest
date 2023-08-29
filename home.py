@@ -304,6 +304,8 @@ if uploaded_file is not None:
     elif method == 'BERTopic':
         @st.cache_data(ttl=3600, show_spinner=False)
         def bertopic_vis(extype):
+          if paper['Publication Year']:
+               paper['Year'] = paper['Publication Year']
           topic_time = paper.Year.values.tolist()
           umap_model = UMAP(n_neighbors=15, n_components=5, 
                   min_dist=0.0, metric='cosine', random_state=42)   
