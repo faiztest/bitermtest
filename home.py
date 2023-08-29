@@ -102,7 +102,8 @@ def clean_csv(extype):
         return ' '.join(words)
     paper['Abstract_lem'] = paper['Abstract_stop'].apply(lemmatize_words)
 
-    remove_dict = {word: None for word in rmv_word}
+    words_rmv = [word.strip() for word in words_to_remove.split(";")]
+    remove_dict = {word: None for word in words_rmv}
     def remove_words(text):
          words = text.split()
          cleaned_words = [word for word in words if word not in remove_dict]
@@ -145,7 +146,7 @@ if uploaded_file is not None:
     method = c1.selectbox(
             'Choose method',
             ('Choose...', 'pyLDA', 'Biterm', 'BERTopic'), on_change=reset_all)
-    rmv_word = c1.text_input("Remove specific words. Separate words by semicolons (;)") 
+    words_to_remove = c1.text_input("Remove specific words. Separate words by semicolons (;)") 
     num_cho = c2.number_input('Choose number of topics', min_value=2, max_value=30, value=2)
     c2.info("Don't do anything during the computing", icon="⚠️")
     topic_abs, paper=clean_csv(extype) 
