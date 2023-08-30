@@ -371,14 +371,23 @@ if uploaded_file is not None:
         tab1, tab2, tab3 = st.tabs(["📈 Generate visualization", "📃 Reference", "📓 Recommended Reading"])
         with tab1:
           try:
-               with st.spinner('Performing computations. Please wait ...'):
+               #with st.spinner('Performing computations. Please wait ...'):
+               with st.status('Performing computations. Please wait ...', expanded=True) as status:
+                    
                     topic_model, topic_time, topics, probs = bertopic_vis(extype)
+                    st.write("⏳ Visualizing topics....")
                     fig1 = Vis_Topics(extype)
+                    st.write("⏳ Visualizing topics....")
                     fig2 = Vis_Documents(extype)
+                    st.write("⏳ Visualizing documents....")
                     fig3 = Vis_Hierarchy(extype)
+                    st.write("⏳ Visualizing hierarcy....")
                     fig4 = Vis_Heatmap(extype)
+                    st.write("⏳ Visualizing terms....")
                     fig5 = Vis_Barchart(extype)
+                    st.write("⏳ Visualizing topics over time....")
                     fig6 = Vis_ToT(extype)
+                    status.update(label="Process complete ✔️", expanded=False)
                     with st.expander("Visualize Topics"):
                          st.write(fig1)
                     with st.expander("Visualize Terms"):
