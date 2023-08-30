@@ -388,18 +388,18 @@ if uploaded_file is not None:
                     st.write("⏳ Visualizing topics over time....")
                     fig6 = Vis_ToT(extype)
                     status.update(label="Process complete ✔️", expanded=False)
-                    with st.expander("Visualize Topics"):
-                         st.write(fig1)
-                    with st.expander("Visualize Terms"):
-                         st.write(fig5)
-                    with st.expander("Visualize Documents"):
-                         st.write(fig2)
-                    with st.expander("Visualize Document Hierarchy"):  
-                         st.write(fig3)
-                    with st.expander("Visualize Topic Similarity"):
-                         st.write(fig4)
-                    with st.expander("Visualize Topics over Time"):
-                         st.write(fig6)                             
+               with st.expander("Visualize Topics"):
+                    st.write(fig1)
+               with st.expander("Visualize Terms"):
+                    st.write(fig5)
+               with st.expander("Visualize Documents"):
+                    st.write(fig2)
+               with st.expander("Visualize Document Hierarchy"):  
+                    st.write(fig3)
+               with st.expander("Visualize Topic Similarity"):
+                    st.write(fig4)
+               with st.expander("Visualize Topics over Time"):
+                    st.write(fig6)                             
                     
           except ValueError:
                st.error('🙇‍♂️ Please raise the number of topics and click submit')
