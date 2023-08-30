@@ -162,7 +162,6 @@ if uploaded_file is not None:
          elif method == 'Biterm':
               btm_seed = t1.number_input('Random state seed', value=100 , min_value=1, max_value=None, step=1)
               btm_iterations = t2.number_input('Iterations number', value=20 , min_value=2, max_value=None, step=1)
-              btm_M = st.number_input('Number of top words for coherence calculation.', value=20 , min_value=5, max_value=None, step=1)
          elif method == 'BERTopic':
               bert_top_n_words = t1.number_input('top_n_words', value=5 , min_value=5, max_value=25, step=1)
               bert_random_state = t1.number_input('random_state', value=42 , min_value=1, max_value=None, step=1)
@@ -261,7 +260,7 @@ if uploaded_file is not None:
             docs_lens = list(map(len, docs_vec))
             biterms = btm.get_biterms(docs_vec)
             model = btm.BTM(
-              X, vocabulary, seed=btm_seed, T=num_topic, M=btm_M, alpha=50/8, beta=0.01)
+              X, vocabulary, seed=btm_seed, T=num_topic, M=20, alpha=50/8, beta=0.01)
             model.fit(biterms, iterations=btm_iterations)
             p_zd = model.transform(docs_vec)
             coherence = model.coherence_
@@ -321,11 +320,19 @@ if uploaded_file is not None:
           if 'Publication Year' in paper.columns:
                paper.rename(columns={'Publication Year': 'Year'}, inplace=True)
           topic_time = paper.Year.values.tolist()
-          umap_model = UMAP(n_neighbors=15, n_components=5, 
-                  min_dist=0.0, metric='cosine', random_state=42)   
+          umap_model = UMAP(n_neighbors=bert_n_neighbors, n_components=bert_n_components, 
+                  min_dist=0.0, metric='cosine', random_state=bert_random_state)   
           cluster_model = KMeans(n_clusters=num_topic)
-          nlp = en_core_web_sm.load(exclude=['tagger', 'parser', 'ner', 'attribute_ruler', 'lemmatizer'])
-          topic_model = BERTopic(embedding_model=nlp, hdbscan_model=cluster_model, language="multilingual", umap_model=umap_model, top_n_words=5)
+          if bert_embedding_model == 'all-MiniLM-L6-v2':
+               emb_mod = 'all-MiniLM-L6-v2'
+               lang = 'en'
+          elif bert_embedding_model == 'en_core_web_sm':
+               emb_mod = en_core_web_sm.load(exclude=['tagger', 'parser', 'ner', 'attribute_ruler', 'lemmatizer'])
+               lang = 'en'
+          elif bert_embedding_model == 'paraphrase-multilingual-MiniLM-L12-v2':
+               emb_mod = 'paraphrase-multilingual-MiniLM-L12-v2'
+               lang = 'multilingual'
+          topic_model = BERTopic(embedding_model=emb_mod, hdbscan_model=cluster_model, language=lang, umap_model=umap_model, top_n_words=bert_top_n_words)
           topics, probs = topic_model.fit_transform(topic_abs)
           return topic_model, topic_time, topics, probs
         
