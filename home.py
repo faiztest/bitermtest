@@ -169,9 +169,9 @@ if uploaded_file is not None:
               bert_n_components = t2.number_input('n_components', value=5 , min_value=1, max_value=None, step=1)
               bert_n_neighbors = t2.number_input('n_neighbors', value=15 , min_value=1, max_value=None, step=1)
               bert_embedding_model = st.radio(
-                   "embedding_model", index=0, 
+                   "embedding_model", 
                    ["all-MiniLM-L6-v2", "en_core_web_sm", "paraphrase-multilingual-MiniLM-L12-v2"],
-                   captions = ["En", "En", "supports 50+ languages"])
+                   captions = ["English", "English", "Supports 50+ languages"], index=0)
          else:
               st.write('Please choose your preferred method')
     if st.button("Submit", on_click=reset_all):
