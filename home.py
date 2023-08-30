@@ -152,11 +152,11 @@ if uploaded_file is not None:
     topic_abs, paper=clean_csv(extype) 
 
     #===advance settings===
-    #with st.expander("Show advance settings"): 
-         #t1, t2 = st.columns([5,5])
-         #if method == 'pyLDA':
-              #random_state= t1.number_input('Random state', value=0 , min_value=0, max_value=None, step=1)
-              #chunksize = t2.number_input('Chunk size', value=100 , min_value=10, max_value=None, step=1)
+    with st.expander("Show advance settings"): 
+         t1, t2 = st.columns([5,5])
+         if method == 'pyLDA':
+              py_random_state = t1.number_input('Random state', min_value=0, max_value=None, step=1)
+              py_chunksize = t2.number_input('Chunk size', value=100 , min_value=10, max_value=None, step=1)
          #elif method == 'Biterm':
               #st.write('Choose...')
          #elif method == 'BERTopic':
@@ -184,8 +184,8 @@ if uploaded_file is not None:
                  lda_model = LdaModel(corpus=corpus,
                              id2word=id2word,
                              num_topics=num_topic, 
-                             random_state=0,
-                             chunksize=100,
+                             random_state=py_random_state,
+                             chunksize=py_chunksize,
                              alpha='auto',
                              per_word_topics=True)
      
