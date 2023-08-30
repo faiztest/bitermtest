@@ -154,20 +154,19 @@ if uploaded_file is not None:
     topic_abs, paper=clean_csv(extype) 
 
     #===advance settings===
-    with d1.expander("Show advance settings"): 
+    with d1.expander("🧮 Show advance settings"): 
          t1, t2 = st.columns([5,5])
-         u1, u2, u3 = st.columns([3,3,3])
          if method == 'pyLDA':
               py_random_state = t1.number_input('Random state', min_value=0, max_value=None, step=1)
               py_chunksize = t2.number_input('Chunk size', value=100 , min_value=10, max_value=None, step=1)
          elif method == 'Biterm':
-              btm_seed = u1.number_input('Random state seed', value=100 , min_value=1, max_value=None, step=1)
-              btm_M = u2.number_input('Number of top words', value=20 , min_value=5, max_value=None, step=1)
-              btm_iterations = u3.number_input('Iterations number', value=20 , min_value=2, max_value=None, step=1)
+              btm_seed = t1.number_input('Random state seed', value=100 , min_value=1, max_value=None, step=1)
+              btm_iterations = t2.number_input('Iterations number', value=20 , min_value=2, max_value=None, step=1)
+              btm_M = st.number_input('Number of top words for coherence calculation.', value=20 , min_value=5, max_value=None, step=1)
          #elif method == 'BERTopic':
               #st.write('Choose...')
-         #else:
-              #st.write('Choose...')
+         else:
+              st.write('Please choose your preferred method')
     if st.button("Submit", on_click=reset_all):
          num_topic = num_cho  
            
@@ -207,7 +206,7 @@ if uploaded_file is not None:
               with st.spinner('Performing computations. Please wait ...'):
                    try:
                         py_lda_vis_html, coherence_lda, vis = pylda(extype)
-                        st.write('Coherence: ', (coherence_lda))
+                        st.write('Coherence score: ', coherence_lda)
                         st.components.v1.html(py_lda_vis_html, width=1500, height=800)
                         st.markdown('Copyright (c) 2015, Ben Mabey. https://github.com/bmabey/pyLDAvis')
                        
@@ -262,13 +261,15 @@ if uploaded_file is not None:
             phi = tmp.get_phi(model)
             topics_coords = tmp.prepare_coords(model)
             totaltop = topics_coords.label.values.tolist()
-            return topics_coords, phi, totaltop
+            perplexity = model.perplexity_
+            coherence = model.coherence_ 
+            return topics_coords, phi, totaltop, perplexity, coherence
 
         tab1, tab2, tab3 = st.tabs(["📈 Generate visualization", "📃 Reference", "📓 Recommended Reading"])
         with tab1:
              try:
                with st.spinner('Performing computations. Please wait ...'): 
-                    topics_coords, phi, totaltop = biterm_topic(extype)            
+                    topics_coords, phi, totaltop, perplexity, coherence = biterm_topic(extype)            
                     col1, col2 = st.columns([4,6])
                   
                     @st.cache_data(ttl=3600)
@@ -283,6 +284,8 @@ if uploaded_file is not None:
                          return btmvis_probs
                             
                     with col1:
+                         st.write('Perplexity score: ', perplexity)
+                         st.write('Coherence score: ', coherence)
                          numvis = st.selectbox(
                               'Choose topic',
                               (totaltop), on_change=reset_biterm)
