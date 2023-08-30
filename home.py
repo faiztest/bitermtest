@@ -171,7 +171,7 @@ if uploaded_file is not None:
               bert_embedding_model = st.radio(
                    "embedding_model", 
                    ["all-MiniLM-L6-v2", "en_core_web_sm", "paraphrase-multilingual-MiniLM-L12-v2"],
-                   captions = ["English", "English", "Supports 50+ languages"], index=0)
+                   captions = ["English", "English", "Supports 50+ languages"], index=0, horizontal=True)
          else:
               st.write('Please choose your preferred method')
     if st.button("Submit", on_click=reset_all):
