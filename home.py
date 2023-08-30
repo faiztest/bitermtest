@@ -269,14 +269,13 @@ if uploaded_file is not None:
             topics_coords = tmp.prepare_coords(model)
             totaltop = topics_coords.label.values.tolist()
             perplexity = model.perplexity_
-            coherence = model.coherence_ 
-            return topics_coords, phi, totaltop, perplexity, coherence
+            return topics_coords, phi, totaltop, perplexity
 
         tab1, tab2, tab3 = st.tabs(["📈 Generate visualization", "📃 Reference", "📓 Recommended Reading"])
         with tab1:
              try:
                with st.spinner('Performing computations. Please wait ...'): 
-                    topics_coords, phi, totaltop, perplexity, coherence = biterm_topic(extype)            
+                    topics_coords, phi, totaltop, perplexity = biterm_topic(extype)            
                     col1, col2 = st.columns([4,6])
                   
                     @st.cache_data(ttl=3600)
@@ -292,7 +291,7 @@ if uploaded_file is not None:
                             
                     with col1:
                          st.write('Perplexity score: ', perplexity)
-                         st.write('Coherence score: ', coherence)
+                         st.write('')
                          numvis = st.selectbox(
                               'Choose topic',
                               (totaltop), on_change=reset_biterm)
