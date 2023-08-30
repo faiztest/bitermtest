@@ -373,27 +373,27 @@ if uploaded_file is not None:
           try:
                with st.spinner('Performing computations. Please wait ...'):
                     topic_model, topic_time, topics, probs = bertopic_vis(extype)
+                    fig1 = Vis_Topics(extype)
+                    fig2 = Vis_Documents(extype)
+                    fig3 = Vis_Hierarchy(extype)
+                    fig4 = Vis_Heatmap(extype)
+                    fig5 = Vis_Barchart(extype)
+                    fig6 = Vis_ToT(extype)
                     with st.expander("Visualize Topics"):
-                         fig1 = Vis_Topics(extype)
                          st.write(fig1)
                     with st.expander("Visualize Terms"):
-                         fig5 = Vis_Barchart(extype)
                          st.write(fig5)
                     with st.expander("Visualize Documents"):
-                         fig2 = Vis_Documents(extype)
                          st.write(fig2)
-                    with st.expander("Visualize Document Hierarchy"):
-                         fig3 = Vis_Hierarchy(extype)
+                    with st.expander("Visualize Document Hierarchy"):  
                          st.write(fig3)
                     with st.expander("Visualize Topic Similarity"):
-                         fig4 = Vis_Heatmap(extype)
                          st.write(fig4)
                     with st.expander("Visualize Topics over Time"):
-                         fig6 = Vis_ToT(extype)
                          st.write(fig6)                             
                     
-          #except ValueError:
-               #st.error('🙇‍♂️ Please raise the number of topics and click submit')
+          except ValueError:
+               st.error('🙇‍♂️ Please raise the number of topics and click submit')
           
           except NameError:
                st.warning('🖱️ Please click Submit')
