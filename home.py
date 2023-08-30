@@ -182,7 +182,7 @@ if uploaded_file is not None:
         st.write('')
 
     elif method == 'pyLDA':       
-         tab1, tab2, tab3 = st.tabs(["📈 Generate visualization & Calculate coherence", "📃 Reference", "📓 Recommended Reading"])
+         tab1, tab2, tab3 = st.tabs(["📈 Generate visualization", "📃 Reference", "📓 Recommended Reading"])
 
          with tab1:
          #===visualization===
