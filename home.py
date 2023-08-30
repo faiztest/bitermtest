@@ -372,7 +372,7 @@ if uploaded_file is not None:
         with tab1:
           try:
                #with st.spinner('Performing computations. Please wait ...'):
-               with st.status('Performing computations. Please wait ...', expanded=True) as status:
+               with st.status('Status...', expanded=True) as status:
                     
                     topic_model, topic_time, topics, probs = bertopic_vis(extype)
                     st.write("⏳ Visualizing topics....")
@@ -387,7 +387,7 @@ if uploaded_file is not None:
                     fig5 = Vis_Barchart(extype)
                     st.write("⏳ Visualizing topics over time....")
                     fig6 = Vis_ToT(extype)
-                    status.update(label="Process complete ✔️", expanded=False)
+                    status.update(label="Completed", expanded=False)
                with st.expander("Visualize Topics"):
                     st.write(fig1)
                with st.expander("Visualize Terms"):
