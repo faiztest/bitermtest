@@ -372,8 +372,8 @@ if uploaded_file is not None:
         with tab1:
           try:
                #with st.spinner('Performing computations. Please wait ...'):
-               with st.status('Status...', expanded=True) as status:
-                    
+               with st.status('Progress', expanded=True) as status:
+                    st.write("⏳ Performing computations....")
                     topic_model, topic_time, topics, probs = bertopic_vis(extype)
                     st.write("⏳ Visualizing topics....")
                     fig1 = Vis_Topics(extype)
