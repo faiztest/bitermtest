@@ -156,11 +156,14 @@ if uploaded_file is not None:
     #===advance settings===
     with d1.expander("Show advance settings"): 
          t1, t2 = st.columns([5,5])
+         u1, u2, u3 = st.columns([3,3,3])
          if method == 'pyLDA':
               py_random_state = t1.number_input('Random state', min_value=0, max_value=None, step=1)
               py_chunksize = t2.number_input('Chunk size', value=100 , min_value=10, max_value=None, step=1)
-         #elif method == 'Biterm':
-              #st.write('Choose...')
+         elif method == 'Biterm':
+              btm_seed = u1.number_input('Random state seed', value=100 , min_value=1, max_value=None, step=1)
+              btm_M = u2.number_input('Number of top words', value=20 , min_value=5, max_value=None, step=1)
+              btm_iterations = u3.number_input('Iterations number', value=20 , min_value=2, max_value=None, step=1)
          #elif method == 'BERTopic':
               #st.write('Choose...')
          #else:
@@ -170,7 +173,7 @@ if uploaded_file is not None:
            
     #===topic===
     if method == 'Choose...':
-        st.write(paper)
+        st.write('')
 
     elif method == 'pyLDA':       
          tab1, tab2, tab3 = st.tabs(["📈 Generate visualization & Calculate coherence", "📃 Reference", "📓 Recommended Reading"])
@@ -252,8 +255,8 @@ if uploaded_file is not None:
             docs_lens = list(map(len, docs_vec))
             biterms = btm.get_biterms(docs_vec)
             model = btm.BTM(
-              X, vocabulary, seed=12321, T=num_topic, M=20, alpha=50/8, beta=0.01)
-            model.fit(biterms, iterations=20)
+              X, vocabulary, seed=btm_seed, T=num_topic, M=btm_M, alpha=50/8, beta=0.01)
+            model.fit(biterms, iterations=btm_iterations)
             p_zd = model.transform(docs_vec)
             coherence = model.coherence_
             phi = tmp.get_phi(model)
