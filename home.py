@@ -163,8 +163,15 @@ if uploaded_file is not None:
               btm_seed = t1.number_input('Random state seed', value=100 , min_value=1, max_value=None, step=1)
               btm_iterations = t2.number_input('Iterations number', value=20 , min_value=2, max_value=None, step=1)
               btm_M = st.number_input('Number of top words for coherence calculation.', value=20 , min_value=5, max_value=None, step=1)
-         #elif method == 'BERTopic':
-              #st.write('Choose...')
+         elif method == 'BERTopic':
+              bert_top_n_words = t1.number_input('top_n_words', value=5 , min_value=5, max_value=25, step=1)
+              bert_random_state = t1.number_input('random_state', value=42 , min_value=1, max_value=None, step=1)
+              bert_n_components = t2.number_input('n_components', value=5 , min_value=1, max_value=None, step=1)
+              bert_n_neighbors = t2.number_input('n_neighbors', value=15 , min_value=1, max_value=None, step=1)
+              bert_embedding_model = st.radio(
+                   "embedding_model", index=0, 
+                   ["all-MiniLM-L6-v2", "en_core_web_sm", "paraphrase-multilingual-MiniLM-L12-v2"],
+                   captions = ["En", "En", "supports 50+ languages"])
          else:
               st.write('Please choose your preferred method')
     if st.button("Submit", on_click=reset_all):
@@ -319,7 +326,7 @@ if uploaded_file is not None:
                   min_dist=0.0, metric='cosine', random_state=42)   
           cluster_model = KMeans(n_clusters=num_topic)
           nlp = en_core_web_sm.load(exclude=['tagger', 'parser', 'ner', 'attribute_ruler', 'lemmatizer'])
-          topic_model = BERTopic(embedding_model=nlp, hdbscan_model=cluster_model, language="multilingual", umap_model=umap_model)
+          topic_model = BERTopic(embedding_model=nlp, hdbscan_model=cluster_model, language="multilingual", umap_model=umap_model, top_n_words=5)
           topics, probs = topic_model.fit_transform(topic_abs)
           return topic_model, topic_time, topics, probs
         
@@ -346,7 +353,7 @@ if uploaded_file is not None:
 
         @st.cache_data(ttl=3600, show_spinner=False)
         def Vis_Barchart(extype):
-          fig5 = topic_model.visualize_barchart(top_n_topics=num_topic, n_words=10)
+          fig5 = topic_model.visualize_barchart(top_n_topics=num_topic) #, n_words=10)
           return fig5
     
         @st.cache_data(ttl=3600, show_spinner=False)
