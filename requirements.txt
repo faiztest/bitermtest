@@ -29,3 +29,4 @@ html2image
 kaleido
 altair_saver
 umap-learn
+sentence-transformers
