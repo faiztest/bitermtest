@@ -34,6 +34,8 @@ import en_core_web_sm
 import pipeline
 from html2image import Html2Image
 from umap import UMAP
+import os
+from sentence_transformers import SentenceTransformer
 
 
 #===config===
@@ -43,27 +45,6 @@ st.set_page_config(
      layout="wide"
 )
 st.header("Topic Modeling")
-hide_menu = """
-          <style>
-     	#MainMenu {visibility: hidden;}
-          #GithubIcon {visibility: hidden;}
-     	footer {visibility: hidden;}
-     	</style>
-     	"""
-st.markdown(hide_menu, unsafe_allow_html=True)
-st.markdown(
-    """
-    <style>
-    .css-1jc7ptx, .e1ewe7hr3, .viewerBadge_container__1QSob,
-    .styles_viewerBadge__1yB5_, .viewerBadge_link__1S137,
-    .viewerBadge_text__1JaDK {
-        display: none;
-    }
-    </style>
-    """,
-    unsafe_allow_html=True
-)
-
 st.subheader('Put your file here...')
 
 #========unique id========
@@ -93,6 +74,9 @@ def reset_biterm():
 
 def reset_all():
      st.cache_data.clear()
+
+#===avoiding deadlock===
+os.environ["TOKENIZERS_PARALLELISM"] = "false"
         
 #===clean csv===
 @st.cache_data(ttl=3600, show_spinner=False)
@@ -170,7 +154,7 @@ if uploaded_file is not None:
     num_cho = c2.number_input('Choose number of topics', min_value=2, max_value=30, value=2)
     words_to_remove = c3.text_input("Remove specific words. Separate words by semicolons (;)") 
     
-    d1, d2 = st.columns([8,2]) 
+    d1, d2 = st.columns([7,3]) 
     d2.info("Don't do anything during the computing", icon="⚠️")
     topic_abs, paper=clean_csv(extype) 
 
@@ -190,8 +174,7 @@ if uploaded_file is not None:
               bert_n_neighbors = t2.number_input('n_neighbors', value=15 , min_value=1, max_value=None, step=1)
               bert_embedding_model = st.radio(
                    "embedding_model", 
-                   ["all-MiniLM-L6-v2", "en_core_web_sm", "paraphrase-multilingual-MiniLM-L12-v2"],
-                   captions = ["English", "English", "Supports 50+ languages"], index=0, horizontal=True)
+                   ["all-MiniLM-L6-v2", "all-mpnet-base-v2", "paraphrase-multilingual-MiniLM-L12-v2"], index=0, horizontal=True)
          else:
               st.write('Please choose your preferred method')
     if st.button("Submit", on_click=reset_all):
@@ -347,14 +330,17 @@ if uploaded_file is not None:
           if bert_embedding_model == 'all-MiniLM-L6-v2':
                emb_mod = 'all-MiniLM-L6-v2'
                lang = 'en'
-          elif bert_embedding_model == 'en_core_web_sm':
-               emb_mod = en_core_web_sm.load(exclude=['tagger', 'parser', 'ner', 'attribute_ruler', 'lemmatizer'])
+          elif bert_embedding_model == 'all-mpnet-base-v2':
+               emb_mod = 'all-mpnet-base-v2'
                lang = 'en'
           elif bert_embedding_model == 'paraphrase-multilingual-MiniLM-L12-v2':
                emb_mod = 'paraphrase-multilingual-MiniLM-L12-v2'
                lang = 'multilingual'
-          topic_model = BERTopic(embedding_model=emb_mod, hdbscan_model=cluster_model, language=lang, umap_model=umap_model, top_n_words=bert_top_n_words)
-          topics, probs = topic_model.fit_transform(topic_abs)
+          sentence_model = SentenceTransformer(emb_mod)
+          embeddings = sentence_model.encode(topic_abs, show_progress_bar=False)
+             
+          topic_model = BERTopic(hdbscan_model=cluster_model, language=lang, umap_model=umap_model, top_n_words=bert_top_n_words, low_memory=True)
+          topics, probs = topic_model.fit_transform(topic_abs, embeddings)
           return topic_model, topic_time, topics, probs
         
         @st.cache_data(ttl=3600, show_spinner=False)
@@ -392,35 +378,27 @@ if uploaded_file is not None:
         tab1, tab2, tab3 = st.tabs(["📈 Generate visualization", "📃 Reference", "📓 Recommended Reading"])
         with tab1:
           try:
-               #with st.spinner('Performing computations. Please wait ...'):
-               with st.status('Progress', expanded=True) as status:
-                    
+               with st.spinner('Performing computations. Please wait ...'):
+               
                     topic_model, topic_time, topics, probs = bertopic_vis(extype)
-                    st.write("⏳ Visualizing topics....")
                     fig1 = Vis_Topics(extype)
-                    st.write("⏳ Visualizing documents....")
                     fig2 = Vis_Documents(extype)
-                    st.write("⏳ Visualizing hierarcy....")
                     fig3 = Vis_Hierarchy(extype)
-                    st.write("⏳ Visualizing similarity....")
                     fig4 = Vis_Heatmap(extype)
-                    st.write("⏳ Visualizing terms....")
                     fig5 = Vis_Barchart(extype)
-                    st.write("⏳ Visualizing topics over time....")
                     fig6 = Vis_ToT(extype)
-                    status.update(label="Completed", expanded=False)
-               with st.expander("Visualize Topics"):
-                    st.write(fig1)
-               with st.expander("Visualize Terms"):
-                    st.write(fig5)
-               with st.expander("Visualize Documents"):
-                    st.write(fig2)
-               with st.expander("Visualize Document Hierarchy"):  
-                    st.write(fig3)
-               with st.expander("Visualize Topic Similarity"):
-                    st.write(fig4)
-               with st.expander("Visualize Topics over Time"):
-                    st.write(fig6)                             
+                    with st.expander("Visualize Topics"):
+                        st.write(fig1)
+                    with st.expander("Visualize Terms"):
+                        st.write(fig5)
+                    with st.expander("Visualize Documents"):
+                        st.write(fig2)
+                    with st.expander("Visualize Document Hierarchy"):  
+                        st.write(fig3)
+                    with st.expander("Visualize Topic Similarity"):
+                        st.write(fig4)
+                    with st.expander("Visualize Topics over Time"):
+                        st.write(fig6)                             
                     
           except ValueError:
                st.error('🙇‍♂️ Please raise the number of topics and click submit')
