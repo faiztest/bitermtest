@@ -46,6 +46,7 @@ st.header("Topic Modeling")
 hide_menu = """
           <style>
      	#MainMenu {visibility: hidden;}
+          #GithubIcon {visibility: hidden;}
      	footer {visibility: hidden;}
      	</style>
      	"""
