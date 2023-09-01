@@ -341,7 +341,7 @@ if uploaded_file is not None:
              
           topic_model = BERTopic(hdbscan_model=cluster_model, umap_model=umap_model, top_n_words=bert_top_n_words, low_memory=True)
           topics, probs = topic_model.fit_transform(topic_abs, embeddings)
-          return topic_model, topic_time, topics, probs, embeddings
+          return topic_model, topic_time, topics, probs
         
         @st.cache_data(ttl=3600, show_spinner=False)
         def Vis_Topics(extype):
@@ -380,9 +380,9 @@ if uploaded_file is not None:
           try:
                with st.spinner('Performing computations. Please wait ...'):
                
-                    topic_model, topic_time, topics, probs, embeddings = bertopic_vis(extype)
+                    topic_model, topic_time, topics, probs = bertopic_vis(extype)
                     fig1 = Vis_Topics(extype)
-                    fig2 = Vis_Documents(extype)
+                    #fig2 = Vis_Documents(extype)
                     fig3 = Vis_Hierarchy(extype)
                     fig4 = Vis_Heatmap(extype)
                     fig5 = Vis_Barchart(extype)
@@ -391,8 +391,8 @@ if uploaded_file is not None:
                         st.write(fig1)
                     with st.expander("Visualize Terms"):
                         st.write(fig5)
-                    with st.expander("Visualize Documents"):
-                        st.write(fig2)
+                    #with st.expander("Visualize Documents"):
+                        #st.write(fig2)
                     with st.expander("Visualize Document Hierarchy"):  
                         st.write(fig3)
                     with st.expander("Visualize Topic Similarity"):
