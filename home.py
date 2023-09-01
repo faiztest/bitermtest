@@ -156,7 +156,7 @@ if uploaded_file is not None:
     
     d1, d2 = st.columns([7,3]) 
     d2.info("Don't do anything during the computing", icon="⚠️")
-    topic_abs, paper=clean_csv(extype) 
+    topic_abs, paper = clean_csv(extype) 
 
     #===advance settings===
     with d1.expander("🧮 Show advance settings"): 
@@ -341,7 +341,7 @@ if uploaded_file is not None:
              
           topic_model = BERTopic(hdbscan_model=cluster_model, language=lang, umap_model=umap_model, top_n_words=bert_top_n_words, low_memory=True)
           topics, probs = topic_model.fit_transform(topic_abs, embeddings)
-          return topic_model, topic_time, topics, probs
+          return topic_model, topic_time, topics, probs, topic_abs
         
         @st.cache_data(ttl=3600, show_spinner=False)
         def Vis_Topics(extype):
@@ -350,7 +350,7 @@ if uploaded_file is not None:
         
         @st.cache_data(ttl=3600, show_spinner=False)
         def Vis_Documents(extype):
-          fig2 = topic_model.visualize_documents(topic_abs)
+          fig2 = topic_model.visualize_documents(topic_abs, embeddings=embeddings)
           return fig2
 
         @st.cache_data(ttl=3600, show_spinner=False)
