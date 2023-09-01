@@ -341,7 +341,7 @@ if uploaded_file is not None:
              
           topic_model = BERTopic(hdbscan_model=cluster_model, language=lang, umap_model=umap_model, top_n_words=bert_top_n_words, low_memory=True)
           topics, probs = topic_model.fit_transform(topic_abs, embeddings)
-          return topic_model, topic_time, topics, probs
+          return topic_model, topic_time, topics, probs, embeddings
         
         @st.cache_data(ttl=3600, show_spinner=False)
         def Vis_Topics(extype):
@@ -380,7 +380,7 @@ if uploaded_file is not None:
           try:
                with st.spinner('Performing computations. Please wait ...'):
                
-                    topic_model, topic_time, topics, probs = bertopic_vis(extype)
+                    topic_model, topic_time, topics, probs, embeddings = bertopic_vis(extype)
                     fig1 = Vis_Topics(extype)
                     fig2 = Vis_Documents(extype)
                     fig3 = Vis_Hierarchy(extype)
