@@ -329,17 +329,17 @@ if uploaded_file is not None:
           cluster_model = KMeans(n_clusters=num_topic)
           if bert_embedding_model == 'all-MiniLM-L6-v2':
                emb_mod = 'all-MiniLM-L6-v2'
-               lang = 'en'
+  
           elif bert_embedding_model == 'all-mpnet-base-v2':
                emb_mod = 'all-mpnet-base-v2'
-               lang = 'en'
+      
           elif bert_embedding_model == 'paraphrase-multilingual-MiniLM-L12-v2':
                emb_mod = 'paraphrase-multilingual-MiniLM-L12-v2'
-               lang = 'multilingual'
+              
           sentence_model = SentenceTransformer(emb_mod)
           embeddings = sentence_model.encode(topic_abs, show_progress_bar=False)
              
-          topic_model = BERTopic(hdbscan_model=cluster_model, language=lang, umap_model=umap_model, top_n_words=bert_top_n_words, low_memory=True)
+          topic_model = BERTopic(hdbscan_model=cluster_model, umap_model=umap_model, top_n_words=bert_top_n_words, low_memory=True)
           topics, probs = topic_model.fit_transform(topic_abs, embeddings)
           return topic_model, topic_time, topics, probs, embeddings
         
