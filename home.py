@@ -35,7 +35,6 @@ import pipeline
 from html2image import Html2Image
 from umap import UMAP
 import os
-from sentence_transformers import SentenceTransformer
 
 
 #===config===
@@ -154,9 +153,9 @@ if uploaded_file is not None:
     num_cho = c2.number_input('Choose number of topics', min_value=2, max_value=30, value=2)
     words_to_remove = c3.text_input("Remove specific words. Separate words by semicolons (;)") 
     
-    d1, d2 = st.columns([7,3]) 
+    d1, d2 = st.columns([8,2]) 
     d2.info("Don't do anything during the computing", icon="⚠️")
-    topic_abs, paper = clean_csv(extype) 
+    topic_abs, paper=clean_csv(extype) 
 
     #===advance settings===
     with d1.expander("🧮 Show advance settings"): 
@@ -174,7 +173,7 @@ if uploaded_file is not None:
               bert_n_neighbors = t2.number_input('n_neighbors', value=15 , min_value=1, max_value=None, step=1)
               bert_embedding_model = st.radio(
                    "embedding_model", 
-                   ["all-MiniLM-L6-v2", "all-mpnet-base-v2", "paraphrase-multilingual-MiniLM-L12-v2"], index=0, horizontal=True)
+                   ["all-MiniLM-L6-v2", "en_core_web_sm", "paraphrase-multilingual-MiniLM-L12-v2"], index=0, horizontal=True)
          else:
               st.write('Please choose your preferred method')
     if st.button("Submit", on_click=reset_all):
@@ -329,18 +328,15 @@ if uploaded_file is not None:
           cluster_model = KMeans(n_clusters=num_topic)
           if bert_embedding_model == 'all-MiniLM-L6-v2':
                emb_mod = 'all-MiniLM-L6-v2'
-  
-          elif bert_embedding_model == 'all-mpnet-base-v2':
-               emb_mod = 'all-mpnet-base-v2'
-      
+               lang = 'en'
+          elif bert_embedding_model == 'en_core_web_sm':
+               emb_mod = en_core_web_sm.load(exclude=['tagger', 'parser', 'ner', 'attribute_ruler', 'lemmatizer'])
+               lang = 'en'
           elif bert_embedding_model == 'paraphrase-multilingual-MiniLM-L12-v2':
                emb_mod = 'paraphrase-multilingual-MiniLM-L12-v2'
-              
-          sentence_model = SentenceTransformer(emb_mod)
-          embeddings = sentence_model.encode(topic_abs, show_progress_bar=False)
-             
-          topic_model = BERTopic(hdbscan_model=cluster_model, umap_model=umap_model, top_n_words=bert_top_n_words, low_memory=True)
-          topics, probs = topic_model.fit_transform(topic_abs, embeddings)
+               lang = 'multilingual'
+          topic_model = BERTopic(embedding_model=emb_mod, hdbscan_model=cluster_model, language=lang, umap_model=umap_model, top_n_words=bert_top_n_words)
+          topics, probs = topic_model.fit_transform(topic_abs)
           return topic_model, topic_time, topics, probs
         
         @st.cache_data(ttl=3600, show_spinner=False)
@@ -350,7 +346,7 @@ if uploaded_file is not None:
         
         @st.cache_data(ttl=3600, show_spinner=False)
         def Vis_Documents(extype):
-          fig2 = topic_model.visualize_documents(topic_abs, embeddings=embeddings)
+          fig2 = topic_model.visualize_documents(topic_abs)
           return fig2
 
         @st.cache_data(ttl=3600, show_spinner=False)
@@ -382,7 +378,7 @@ if uploaded_file is not None:
                
                     topic_model, topic_time, topics, probs = bertopic_vis(extype)
                     fig1 = Vis_Topics(extype)
-                    #fig2 = Vis_Documents(extype)
+                    fig2 = Vis_Documents(extype)
                     fig3 = Vis_Hierarchy(extype)
                     fig4 = Vis_Heatmap(extype)
                     fig5 = Vis_Barchart(extype)
@@ -391,8 +387,8 @@ if uploaded_file is not None:
                         st.write(fig1)
                     with st.expander("Visualize Terms"):
                         st.write(fig5)
-                    #with st.expander("Visualize Documents"):
-                        #st.write(fig2)
+                    with st.expander("Visualize Documents"):
+                        st.write(fig2)
                     with st.expander("Visualize Document Hierarchy"):  
                         st.write(fig3)
                     with st.expander("Visualize Topic Similarity"):
@@ -400,8 +396,8 @@ if uploaded_file is not None:
                     with st.expander("Visualize Topics over Time"):
                         st.write(fig6)                             
                     
-          #except ValueError:
-               #st.error('🙇‍♂️ Please raise the number of topics and click submit')
+          except ValueError:
+               st.error('🙇‍♂️ Please raise the number of topics and click submit')
           
           except NameError:
                st.warning('🖱️ Please click Submit')
