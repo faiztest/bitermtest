@@ -341,7 +341,7 @@ if uploaded_file is not None:
              
           topic_model = BERTopic(hdbscan_model=cluster_model, language=lang, umap_model=umap_model, top_n_words=bert_top_n_words, low_memory=True)
           topics, probs = topic_model.fit_transform(topic_abs, embeddings)
-          return topic_model, topic_time, topics, probs, topic_abs
+          return topic_model, topic_time, topics, probs
         
         @st.cache_data(ttl=3600, show_spinner=False)
         def Vis_Topics(extype):
